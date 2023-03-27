@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const firebaseConfig = {
-    apiKey: process.env.API_KEY,
+    apiKey: "AIzaSyA_QGD_PbljpxqZJRU5o3lQu7EyRS_uanc",
     authDomain: "comunidade-cfo.firebaseapp.com",
     projectId: "comunidade-cfo",
     storageBucket: "comunidade-cfo.appspot.com",
