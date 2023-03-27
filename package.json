@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "tsx ./src/routes/firebase_firestore.ts && tsx ./src/routes/firebase_auth.ts"
+    "test": "tsx ./src/controllers/firebase_controller.ts"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
