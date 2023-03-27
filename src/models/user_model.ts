@@ -6,6 +6,7 @@ interface IUserModel{
     name:string;
     role:string;
     team:string;
+    
 }
 
 class UserModel{
