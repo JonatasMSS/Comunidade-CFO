@@ -6,7 +6,7 @@ dotenv.config();
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA_QGD_PbljpxqZJRU5o3lQu7EyRS_uanc",
+    apiKey: process.env.API_KEY,
     authDomain: "comunidade-cfo.firebaseapp.com",
     projectId: "comunidade-cfo",
     storageBucket: "comunidade-cfo.appspot.com",
