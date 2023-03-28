@@ -6,7 +6,14 @@ module.exports = {
     'index.html'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        'black':'#0A0909',
+      },
+      fontFamily:{
+        'K2D':['K2D','sans-serif']
+      }
+    },
   },
   plugins: [],
 }
