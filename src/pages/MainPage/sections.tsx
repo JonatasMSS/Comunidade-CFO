@@ -5,6 +5,7 @@
 import { Carrousel } from '../../components/Carrousel';
 import { InputForm } from '../../components/InputForm';
 import Google from '../../assets/GoogleSimbolo.svg';
+import { SubmitButton } from '../../components/SubmitButton';
 
 export function IntroductionSection() {
     return (
@@ -41,9 +42,9 @@ export function LoginSection() {
                 <span className='font-semibold w-full text-center text-red-400'>Esqueci minha senha</span>
 
                 
-                <button className='bg-green-500 py-2 px-6 rounded-lg'>Entrar</button>
+                <SubmitButton label='Entrar'/>
                 
-                <button className='w-full p-2 rounded-lg bg-white flex text-black  font-semibold items-center justify-evenly'><img src={Google} alt="..." /> Entrar com o google</button>
+                <button className='w-full p-2 rounded-lg bg-white flex text-black  font-semibold items-center justify-evenly sm:justify-center sm:gap-5'><img src={Google} alt="..." /> Entrar com o google</button>
                 
 
             </form>
