@@ -4,7 +4,7 @@
 
 import { Carrousel } from '../../components/Carrousel';
 import { InputForm } from '../../components/InputForm';
-
+import Google from '../../assets/GoogleSimbolo.svg';
 
 export function IntroductionSection() {
     return (
@@ -24,13 +24,28 @@ export function LoginSection() {
     return (
         <div className='w-full h-full flex flex-col gap-5 justify-start items-center'>
             <span className='text-white my-10 mx-2  font-K2D font-bold text-3xl'>Faça login para acessar a comunidade!</span>
-            <form className='w-4/5 h-32 bg-DF-black rounded-lg text-white font-K2D p-5'>
+            <form className='w-4/5 flex flex-col items-center gap-5 bg-DF-black rounded-lg text-white font-K2D p-5 '>
                 <InputForm
                     htmlfor='email'
                     inputType='email'
                     label='E-mail'
                     placeholder='Digite seu email'
                 />
+                <InputForm
+                    htmlfor='password'
+                    inputType='password'
+                    label='Senha'
+                    placeholder='Digite sua senha'
+
+                />
+                <span className='font-semibold w-full text-center text-red-400'>Esqueci minha senha</span>
+
+                
+                <button className='bg-green-500 py-2 px-6 rounded-lg'>Entrar</button>
+                
+                <button className='w-full p-2 rounded-lg bg-white flex text-black  font-semibold items-center justify-evenly'><img src={Google} alt="..." /> Entrar com o google</button>
+                
+
             </form>
         </div>
     )
