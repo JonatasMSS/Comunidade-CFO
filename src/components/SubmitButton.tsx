@@ -1,11 +1,19 @@
 
-type ISubmitButton = {
-    label:string;
+interface ISubmitButton {
+    label: string;
+    handleSubmit?(): void;
+    disabled?: boolean;
 }
 
 
-export function SubmitButton({label}:ISubmitButton) {
+export function SubmitButton({ label, handleSubmit, disabled = false }: ISubmitButton) {
     return (
-        <button className='bg-green-500 py-2 px-6 rounded-lg'>{label}</button>
+        <button
+            type="submit"
+            disabled={disabled} onClick={handleSubmit}
+            className='bg-green-500 disabled:bg-green-300 transition-colors py-2 px-6 rounded-lg'
+        >
+            {label}
+        </button>
     )
 }
