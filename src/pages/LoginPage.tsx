@@ -42,9 +42,7 @@ export function LoginPage() {
                         htmlfor='email'
                         inputType='email'
                         label='E-mail'
-                        onBlur={formValidation.handleBlur}
-                        onChange={formValidation.handleChange}
-                        value={formValidation.values.email}
+                        {...formValidation.getFieldProps('email')}
                         placeholder='Digite seu email'
                         error={formValidation.touched.email && formValidation.errors.email ? formValidation.errors.email : ''}
                     />
@@ -55,9 +53,7 @@ export function LoginPage() {
                         inputType='password'
                         label='Senha'
                         placeholder='Digite sua senha'
-                        onChange={formValidation.handleChange}
-                        onBlur={formValidation.handleBlur}
-                        value={formValidation.values.password}
+                        {...formValidation.getFieldProps('password')}
                         error={formValidation.touched.password && formValidation.errors.password ? formValidation.errors.password : ''}
 
                     />

@@ -4,6 +4,7 @@ import MainPage from '../pages/MainPage';
 import { LoginPage } from '../pages/LoginPage';
 import { ErrorPage } from '../pages/ErrorPage';
 import { RegisterPage } from '../pages/RegisterPage';
+import { PostPage } from '../pages/post_page/PostPage';
 
 const routes = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ const routes = createBrowserRouter([
     {
         path:'registro',
         element:<RegisterPage/>
+    },
+    {
+        path:'posts',
+        element:<PostPage/>
     }
 ])
 
