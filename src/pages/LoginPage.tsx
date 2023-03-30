@@ -46,7 +46,7 @@ export function LoginPage() {
                         onChange={formValidation.handleChange}
                         value={formValidation.values.email}
                         placeholder='Digite seu email'
-                        error={formValidation.touched && formValidation.errors ? formValidation.errors.email : ''}
+                        error={formValidation.touched.email && formValidation.errors.email ? formValidation.errors.email : ''}
                     />
 
 
@@ -58,7 +58,7 @@ export function LoginPage() {
                         onChange={formValidation.handleChange}
                         onBlur={formValidation.handleBlur}
                         value={formValidation.values.password}
-                        error={formValidation.touched && formValidation.errors ? formValidation.errors.password : ''}
+                        error={formValidation.touched.password && formValidation.errors.password ? formValidation.errors.password : ''}
 
                     />
                     <span className='font-semibold w-full text-center text-red-400'>Esqueci minha senha</span>
