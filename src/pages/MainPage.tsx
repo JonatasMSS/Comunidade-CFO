@@ -9,7 +9,7 @@ import { IntroductionSection } from './sections/sections';
 
 function MainPage() {
   return (
-    <div className=' pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
+    <div className='h-screen pb-2 overflow-auto bg-black flex flex-col-reverse  lg:flex-row justify-center items-center'>
       {/* <IntroductionSection /> */}
 
       <IntroductionSection/>

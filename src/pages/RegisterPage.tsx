@@ -3,14 +3,13 @@ import React from 'react';
 import MainFoto from '../assets/Principal.jpg';
 import { InputForm } from '../components/InputForm';
 import { SubmitButton } from '../components/SubmitButton';
+import { GoogleLogin } from '../components/GoogleLogin';
 
 export function RegisterPage() {
     return (
-        <div className='w-screen h-screen pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
-
-
+        <div className='  pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
             {/* Form section */}
-            <div className='w-screen min-h-screen flex flex-col items-center'>
+            <div className='w-full  flex flex-col items-center'>
                 <span className='text-white my-10 mx-2  font-K2D font-bold text-3xl'>Crie sua conta na comunidade!</span>
                 <form className='w-4/5 flex flex-col items-center gap-3 bg-DF-black rounded-lg text-white font-K2D p-5 '>
                     <InputForm
@@ -52,16 +51,29 @@ export function RegisterPage() {
                         inputType='password'
                         placeholder='Confirmar senha'
                     />
-                    <SubmitButton label='Registrar'/>
+                    <SubmitButton label='Registrar' />
 
-                    
+
+                    {/* Divisor */}
+                    <div className='flex gap-5 w-full items-center justify-center'>
+                        <div className='h-0.5 w-full bg-zinc-600' />
+                        <span className=' font-bold text-sm'>Ou</span>
+                        <div className='h-0.5 w-full bg-zinc-600' />
+                    </div>
+
+                    {/* Google login */}
+
+                    <GoogleLogin />
+
                 </form>
             </div>
 
 
             {/* Image Section */}
-            <img src={MainFoto} alt="Foto principal"
-                className=' lg:w-1/2 lg:min-h-screen' loading='lazy' />
+            <div className='w-full h-full flex flex-col'>
+                <img src={MainFoto}  alt="Foto principal"
+                    loading='lazy' />
+            </div>
         </div>
     )
 }

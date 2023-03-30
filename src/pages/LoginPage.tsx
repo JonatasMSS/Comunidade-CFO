@@ -2,11 +2,13 @@ import { useFormik } from "formik"
 import { InputForm } from "../components/InputForm"
 import { SubmitButton } from "../components/SubmitButton"
 import * as yup from 'yup';
-import Google from '../assets/GoogleSimbolo.svg';
+
 
 
 
 import MainFoto from '../assets/Principal.jpg';
+import { GoogleLogin } from "../components/GoogleLogin";
+import { Link } from "react-router-dom";
 
 export function LoginPage() {
 
@@ -67,8 +69,10 @@ export function LoginPage() {
                         disabled={!formValidation.isValid}
                     />
 
-                    <button className='w-full p-2 rounded-lg bg-white flex text-black  font-semibold items-center justify-evenly sm:justify-center sm:gap-5'><img src={Google} alt="..." /> Entrar com o google</button>
+                    <GoogleLogin/>
 
+                   
+                   <span className="w-full text-center">Não tem uma conta? <Link className="font-bold text-green-600" to={'/registro'}>Registre-se</Link></span>
 
                 </form>
             </div>
