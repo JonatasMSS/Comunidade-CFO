@@ -1,9 +1,10 @@
 
 
-import MainFoto from '../../assets/Principal.jpg';
+import MainFoto from '../assets/Principal.jpg';
 
-import '../../styles/global.css';
-import { IntroductionSection, LoginSection } from './sections';
+import '../styles/global.css';
+import { LoginPage } from './LoginPage';
+import { IntroductionSection } from './sections/sections';
 
 
 function MainPage() {
@@ -11,7 +12,7 @@ function MainPage() {
     <div className=' pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
       {/* <IntroductionSection /> */}
 
-      <LoginSection/>
+      <IntroductionSection/>
       
       {/* Image Section */}
       <img src={MainFoto} alt="Foto principal"
