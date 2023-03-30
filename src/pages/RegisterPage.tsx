@@ -49,9 +49,7 @@ export function RegisterPage() {
                         htmlfor='nickname'
                         inputType='text'
                         placeholder='Digite um nome de usuário'
-                        onChange={formValidation.handleChange}
-                        onBlur={formValidation.handleBlur}
-                        value={formValidation.values.nickname}
+                       {...formValidation.getFieldProps('nickname')}
                         error={formValidation.touched.nickname && formValidation.errors.nickname ? formValidation.errors.nickname : ''}
 
                     />
@@ -60,9 +58,8 @@ export function RegisterPage() {
                         placeholder='Equipe da robótica'
                         htmlfor='team'
                         inputType='text'
-                        onChange={formValidation.handleChange}
-                        onBlur={formValidation.handleBlur}
-                        value={formValidation.values.team}
+                        {...formValidation.getFieldProps('team')}
+                       
                         error={formValidation.touched.team && formValidation.errors.team ? formValidation.errors.team : ''}
                     />
                     <InputForm
@@ -70,9 +67,7 @@ export function RegisterPage() {
                         placeholder='Ex.:Programador,engenheiro,redação...'
                         htmlfor='role'
                         inputType='text'
-                        onChange={formValidation.handleChange}
-                        onBlur={formValidation.handleBlur}
-                        value={formValidation.values.role}
+                        {...formValidation.getFieldProps('role')}
                         error={formValidation.touched.role && formValidation.errors.role ? formValidation.errors.role : ''}
                     />
                     <InputForm
@@ -80,9 +75,7 @@ export function RegisterPage() {
                         htmlfor='email'
                         inputType='email'
                         placeholder='Ex:selenegomes@gmail.com'
-                        onChange={formValidation.handleChange}
-                        onBlur={formValidation.handleBlur}
-                        value={formValidation.values.email}
+                        {...formValidation.getFieldProps('email')}
                         error={formValidation.touched.email && formValidation.errors.email ? formValidation.errors.email : ''}
 
                     />
@@ -91,9 +84,7 @@ export function RegisterPage() {
                         htmlfor='password'
                         inputType='password'
                         placeholder='Ex:123@abcdefg'
-                        onChange={formValidation.handleChange}
-                        onBlur={formValidation.handleBlur}
-                        value={formValidation.values.password}
+                        {...formValidation.getFieldProps('password')}
                         error={formValidation.touched.password && formValidation.errors.password ? formValidation.errors.password : ''}
                     />
                     <InputForm
@@ -101,9 +92,7 @@ export function RegisterPage() {
                         htmlfor='pass_confirm'
                         inputType='password'
                         placeholder='Confirmar senha'
-                        onChange={formValidation.handleChange}
-                        onBlur={formValidation.handleBlur}
-                        value={formValidation.values.pass_confirm}
+                        {...formValidation.getFieldProps('pass_confirm')}
                         error={formValidation.touched.pass_confirm && formValidation.errors.pass_confirm ? formValidation.errors.pass_confirm : ''}
                     />
                     <SubmitButton label='Registrar' disabled={!formValidation.isValid} />
