@@ -13,6 +13,7 @@ import { browserSessionPersistence, setPersistence, signInWithEmailAndPassword }
 import FB_Auth from "../routes/firebase_auth";
 import { useState } from "react";
 import { Loader } from "../components/Loader";
+import { SignIn } from "../controllers/firebase_auth_controller";
 
 export function LoginPage() {
 
@@ -38,8 +39,7 @@ export function LoginPage() {
         onSubmit: async (values) => {
             try {
                 setLoading(true);
-                await setPersistence(FB_Auth,browserSessionPersistence);
-                await signInWithEmailAndPassword(FB_Auth, values.email, values.password);
+                await SignIn({persistence:browserSessionPersistence,email:values.email,password:values.password})
                 setLoading(false);
                 navigator('/posts');
             } catch (error) {

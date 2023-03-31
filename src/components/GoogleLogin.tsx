@@ -3,6 +3,7 @@ import { GoogleAuthProvider, browserSessionPersistence, setPersistence, signInWi
 import Google from '../assets/GoogleSimbolo.svg';
 import FB_Auth from '../routes/firebase_auth';
 import { useNavigate } from 'react-router-dom';
+import { SingInWithGoogle } from '../controllers/firebase_auth_controller';
 
 
 interface IGoogleLogin {
@@ -15,11 +16,10 @@ export function GoogleLogin({ loaderState }: IGoogleLogin) {
     const navigate = useNavigate()
 
     const handleLogin = async () => {
-        const google_provider = new GoogleAuthProvider();
+       
         try {
             loaderState?.(true);
-            await setPersistence(FB_Auth,browserSessionPersistence);
-            await signInWithPopup(FB_Auth, google_provider);
+            await SingInWithGoogle(browserSessionPersistence);
             loaderState?.(false);
             navigate('/posts');
 
