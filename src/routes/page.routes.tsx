@@ -6,6 +6,7 @@ import { ErrorPage } from '../pages/ErrorPage';
 import { RegisterPage } from '../pages/RegisterPage';
 import { PostPage } from '../pages/post_page/PostPage';
 import { AuthProvider } from '../context/AuthContext';
+import { RedirectionLinkPage } from '../pages/RedirectionLinkPage';
 
 const routes = createBrowserRouter([
     {
@@ -20,11 +21,15 @@ const routes = createBrowserRouter([
     },
     {
         path:'registro',
-        element:<RegisterPage/>
+        element:<RegisterPage/>,
     },
     {
         path:'posts',
         element:<AuthProvider child={<PostPage/>}/>
+    },
+    {
+        path:'registro/redirection',
+        element:<RedirectionLinkPage/>
     }
 ])
 

@@ -57,7 +57,9 @@ export function LoginPage() {
     return (
         <>  
             {
-                isLoading && <Loader/>
+               isLoading &&  <div className="w-screen h-screen fixed">
+                    <Loader/>
+               </div>
             }
             <div className=' pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
                 {/*  Login section */}

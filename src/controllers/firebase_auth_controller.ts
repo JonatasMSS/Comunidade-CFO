@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, Persistence, browserSessionPersistence, setPersistence, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, Persistence, browserSessionPersistence, setPersistence, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import FB_Auth from "../routes/firebase_auth";
 
 

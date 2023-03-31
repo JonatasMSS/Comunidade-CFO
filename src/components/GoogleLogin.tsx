@@ -4,6 +4,7 @@ import Google from '../assets/GoogleSimbolo.svg';
 import FB_Auth from '../routes/firebase_auth';
 import { useNavigate } from 'react-router-dom';
 import { SingInWithGoogle } from '../controllers/firebase_auth_controller';
+import { useMediaQuery } from 'react-responsive';
 
 
 interface IGoogleLogin {
@@ -14,6 +15,7 @@ interface IGoogleLogin {
 export function GoogleLogin({ loaderState }: IGoogleLogin) {
 
     const navigate = useNavigate()
+
 
     const handleLogin = async () => {
        
