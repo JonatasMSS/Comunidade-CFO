@@ -33,7 +33,7 @@ export function PostPage() {
                         </Tabs.List>
                         <Tabs.Content value="em_alta" className="w-full flex flex-col py-5">
                            
-                            <PostItem/>
+                           
 
 
                         </Tabs.Content>
