@@ -15,7 +15,7 @@ export function AuthProvider({child}:IAuthProvider){
     const [user,setUser] = useState<User | null>(null)
 
     onAuthStateChanged(FB_Auth,user => {
-    
+        
         setUser(user);
     })
 

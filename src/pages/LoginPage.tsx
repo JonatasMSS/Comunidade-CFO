@@ -17,9 +17,11 @@ import { Loader } from "../components/Loader";
 export function LoginPage() {
 
     const navigator = useNavigate()
-
-
     const [isLoading, setLoading] = useState(false);
+
+
+
+
 
     const validationSchema = yup.object().shape({
         email: yup.string().email('Digite um email válido').required('Campo obrigatório'),
@@ -47,6 +49,7 @@ export function LoginPage() {
         }
     })
 
+    
 
 
 
@@ -88,7 +91,7 @@ export function LoginPage() {
                             disabled={!formValidation.isValid}
                         />
 
-                        <GoogleLogin />
+                        <GoogleLogin loaderState={setLoading} />
 
 
                         <span className="w-full text-center">Não tem uma conta? <Link className="font-bold text-green-600" to={'/registro'}>Registre-se</Link></span>
