@@ -8,9 +8,13 @@ import * as yup from 'yup';
 
 import MainFoto from '../assets/Principal.jpg';
 import { GoogleLogin } from "../components/GoogleLogin";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import FB_Auth from "../routes/firebase_auth";
 
 export function LoginPage() {
+
+    const navigator = useNavigate()
 
     const validationSchema = yup.object().shape({
         email: yup.string().email('Digite um email válido').required('Campo obrigatório'),
@@ -24,8 +28,13 @@ export function LoginPage() {
             password: ''
         },
         validateOnBlur: true,
-        onSubmit: (values) => {
-            alert(`Enviado com sucesso! --> Email:${values.email} e Senha:${values.password}`)
+        onSubmit: async (values) => {
+           try {
+                await signInWithEmailAndPassword(FB_Auth,values.email,values.password)
+                navigator('/posts');
+           } catch (error) {
+             alert('Senha ou usuário incorretos')
+           }
         }
     })
 
@@ -36,7 +45,7 @@ export function LoginPage() {
     return (
         <div className=' pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
             {/*  Login section */}
-
+            
             <div className='w-full h-full flex flex-col gap-5 justify-start items-center'>
                 <span className='text-white my-10 mx-2  font-K2D font-bold text-3xl'>Faça login para acessar a comunidade!</span>
                 <form onSubmit={formValidation.handleSubmit} className='w-4/5 flex flex-col items-center gap-3 bg-DF-black rounded-lg text-white font-K2D p-5 '>

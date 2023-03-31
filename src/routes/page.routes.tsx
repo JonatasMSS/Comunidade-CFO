@@ -5,6 +5,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { ErrorPage } from '../pages/ErrorPage';
 import { RegisterPage } from '../pages/RegisterPage';
 import { PostPage } from '../pages/post_page/PostPage';
+import { AuthProvider } from '../context/AuthContext';
 
 const routes = createBrowserRouter([
     {
@@ -23,7 +24,7 @@ const routes = createBrowserRouter([
     },
     {
         path:'posts',
-        element:<PostPage/>
+        element:<AuthProvider child={<PostPage/>}/>
     }
 ])
 
