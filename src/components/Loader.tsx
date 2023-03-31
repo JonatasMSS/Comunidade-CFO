@@ -1,10 +1,12 @@
+import Robot from '../assets/icons/robot_Loader.svg';
+
 
 
 
 export function Loader() {
     return (
-        <div className="w-screen h-screen absolute bg-gray-500 opacity-50">
-            <span className="font-bold text-black text-5xl">Carregando...</span>
+        <div className="w-full h-full flex flex-col items-center justify-center absolute bg-zinc-800/80 z-10 opacity-100">
+            <img src={Robot} alt="Robot" className='w-32 h-32 opacity-100 animate-bounce' />
         </div>
     )
 }
