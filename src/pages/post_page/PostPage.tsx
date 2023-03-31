@@ -11,7 +11,7 @@ export function PostPage() {
     const isSmallScreen = useMediaQuery({ query: '(max-width:640px)' })
     const user = useContext(AuthContext);
 
-    
+    console.log(user);
 
     if (user && user.uid) {
         return (

@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import MainFoto from '../assets/Principal.jpg';
 import { GoogleLogin } from "../components/GoogleLogin";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { browserSessionPersistence, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
 import FB_Auth from "../routes/firebase_auth";
 import { useState } from "react";
 import { Loader } from "../components/Loader";
@@ -36,6 +36,7 @@ export function LoginPage() {
         onSubmit: async (values) => {
             try {
                 setLoading(true);
+                await setPersistence(FB_Auth,browserSessionPersistence);
                 await signInWithEmailAndPassword(FB_Auth, values.email, values.password);
                 setLoading(false);
                 navigator('/posts');
