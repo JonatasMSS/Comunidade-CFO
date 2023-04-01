@@ -14,21 +14,15 @@ interface IAuthProvider {
 export function AuthProvider({ child }: IAuthProvider) {
 
     const [user, setUser] = useState<UserModel | null>(null)
-    const [tempUser,setTempUser] = useState<User | null>(null);
 
     onAuthStateChanged(FB_Auth, (user) => {
         if (user) {
-
-            setTempUser(tempUser);
-
-            GetUserData(tempUser!.uid).then((userExtraData) => {
+            GetUserData(user!.email).then((userExtraData) => {
                 //Coleto os User's no firestore
                 const userData = userExtraData;
-               
+
                 //Defino o usuário com o model
                 setUser(userData);
-
-
             }).catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;

@@ -19,7 +19,7 @@ export function LoginPage() {
 
     const navigator = useNavigate()
     const [isLoading, setLoading] = useState(false);
-
+    
 
 
 
@@ -40,6 +40,7 @@ export function LoginPage() {
             try {
                 setLoading(true);
                 await SignIn({persistence:browserSessionPersistence,email:values.email,password:values.password})
+                
                 setLoading(false);
                 navigator('/posts');
             } catch (error) {

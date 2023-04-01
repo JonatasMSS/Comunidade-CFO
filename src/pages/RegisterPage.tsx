@@ -7,11 +7,13 @@ import { GoogleLogin } from '../components/GoogleLogin';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Loader } from '../components/Loader';
+import { RegisterUser } from '../controllers/firebase_auth_controller';
+import { useNavigate } from 'react-router-dom';
 
 export function RegisterPage() {
 
     const [isLoading, setLoading] = useState(false);
-
+    const navigate = useNavigate();
     //Form validator
     const validatorSchema = yup.object().shape({
         nickname: yup.string().required('É preciso de um nome'),
@@ -31,8 +33,22 @@ export function RegisterPage() {
             password: '',
             pass_confirm: '',
         },
-        onSubmit: (formData) => {
-
+        onSubmit: async (formData) => {
+            try {
+                setLoading(true);
+                await RegisterUser({
+                    email: formData.email,
+                    name: formData.nickname,
+                    password: formData.password,
+                    role: formData.role,
+                    team: formData.team
+                })
+                setLoading(false);
+                navigate('/posts');
+            } catch (error) {
+               alert(`Algo de errado no formulário:${error}`)
+               setLoading(false);
+            }
         }
     })
 

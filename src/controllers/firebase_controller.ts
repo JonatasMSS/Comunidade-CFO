@@ -1,4 +1,4 @@
-import { Timestamp, collection, getDocs,doc, getDoc, setDoc } from "firebase/firestore";
+import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where } from "firebase/firestore";
 import DB_Firestore from "../routes/firebase_firestore";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
@@ -64,23 +64,27 @@ export async function GetAllComments() {
         console.log("Algo deu errado -> ", error);
     }
 }
-export async function GetUserData(id:string) {
-    const userReference = doc(DB_Firestore,'users',id);
+export async function GetUserData(email:string | null) {
+    const userReference = doc(DB_Firestore,'users',email!);
     const userSnap = await getDoc(userReference)
     
     if(userSnap.exists()){
         return new UserModel({
             name:userSnap.data()['name'],
-            email:userSnap.data()['email'],
+            email:userSnap.id,
             role:userSnap.data()['role'],
             team:userSnap.data()['team'],
-            UID:userSnap.id
+            UID:userSnap.data()['UID'],
         })
     }
 
     return null;   
 }
+
+
+
 export async function CreateUserInFirestore(userData:UserModel) {
-    const usersReference = doc(DB_Firestore,'users',userData.UID);
-    await setDoc(usersReference,userData.toFirestore(),{merge:true})
+    //Cria dados extras dos usuários usando email com identificador unico
+    const usersReference = doc(DB_Firestore,'users',userData.email);
+    await setDoc(usersReference,userData.toFirestore())
 }

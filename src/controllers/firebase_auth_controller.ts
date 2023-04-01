@@ -1,7 +1,9 @@
 import { GoogleAuthProvider, Persistence, browserSessionPersistence, createUserWithEmailAndPassword, sendEmailVerification, setPersistence, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import FB_Auth from "../routes/firebase_auth";
-import { CreateUserInFirestore } from "./firebase_controller";
+import { CreateUserInFirestore, GetUserData } from "./firebase_controller";
 import UserModel from "../models/user_model";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 
 
@@ -13,19 +15,13 @@ interface ISignIn {
 }
 
 export async function SignIn({ persistence, ...userData }: ISignIn) {
-    try {
-        const auth = FB_Auth;
-        if (auth.currentUser!.emailVerified) {
-            await setPersistence(auth, persistence);
-            return await signInWithEmailAndPassword(auth, userData.email, userData.password);
-        } else {
-            alert('Parece que seu email ainda não foi verificado. Por favor, verifique-o');
-        }
 
 
-    } catch (error) {
-        console.log(`Something's wrong with SignIn function: ${error}`)
-    }
+    const auth = FB_Auth;
+    await setPersistence(auth, persistence);
+    return await signInWithEmailAndPassword(auth, userData.email, userData.password);
+
+
 }
 export async function SignInWithGoogle(persistence: Persistence = browserSessionPersistence) {
     try {
@@ -57,37 +53,29 @@ interface IUserRegister {
     role: string,
     email: string,
     password: string,
+
 }
 
 export async function RegisterUser(userData: IUserRegister) {
     const auth = FB_Auth;
+    const verifyEmailInFirestore = await GetUserData(userData.email);
+    if(verifyEmailInFirestore){
+        throw "Esse email já existe no banco de dados"
+    }
+    await setPersistence(auth, browserSessionPersistence);
     createUserWithEmailAndPassword(auth, userData.email, userData.password)
-        .then((userCredentials) => {
+        .then(async (userCredentials) => {
             const userModelfromCredentials = new UserModel({
                 email: userCredentials.user.email ?? 'noemail@gmail.com',
-                name: userCredentials.user.displayName ?? 'noname',
+                name: userData.name,
                 UID: userCredentials.user.uid,
                 role: userData.role,
                 team: userData.team
             })
 
             //Cria um usuário no firestore com dados adicionais
-            CreateUserInFirestore(userModelfromCredentials)
-                .then(()=>{
-
-                    //Depois de criado, envia um email de verificação ao user
-
-                    if(auth.currentUser){
-                        sendEmailVerification(auth.currentUser)
-                    }
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-
-                    console.log(`Something's wrong when tried to register an user in Firestore\ncode:${errorCode}\nmessage:${errorMessage}`)
-                })
-
+           await CreateUserInFirestore(userModelfromCredentials);
+            
 
         })
         .catch(error => {

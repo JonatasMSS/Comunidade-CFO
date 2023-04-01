@@ -29,6 +29,7 @@ class UserModel{
             role:this.role,
             team:this.team,
             name:this.name,
+            UID:this.UID,
         }
     }
 }
