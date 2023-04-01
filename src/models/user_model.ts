@@ -3,16 +3,16 @@
 interface IUserModel{
     UID:string;
     name:string;
-    role?:string;
-    team?:string;
+    role?:string | undefined;
+    team?:string | undefined;
     email:string;
 }
 
 class UserModel{
     UID:string;
     name:string;
-    role?:string;
-    team?:string;
+    role?:string | undefined;
+    team?:string | undefined;
     email:string;
     constructor({...props}:IUserModel){
         this.UID = props.UID;
@@ -28,7 +28,7 @@ class UserModel{
             email:this.email,
             role:this.role,
             team:this.team,
-            name:this.name
+            name:this.name,
         }
     }
 }
