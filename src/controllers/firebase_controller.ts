@@ -65,7 +65,7 @@ export async function GetAllComments() {
     }
 }
 export async function GetUserData(email:string | null) {
-    const userReference = doc(DB_Firestore,'users',email!);
+    const userReference = doc(DB_Firestore,'users',email ?? '');
     const userSnap = await getDoc(userReference)
     
     if(userSnap.exists()){
