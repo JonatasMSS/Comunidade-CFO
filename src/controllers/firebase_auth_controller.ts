@@ -59,29 +59,31 @@ interface IUserRegister {
 export async function RegisterUser(userData: IUserRegister) {
     const auth = FB_Auth;
     const verifyEmailInFirestore = await GetUserData(userData.email);
-    if(verifyEmailInFirestore){
-        throw "Esse email já existe no banco de dados"
+    if (verifyEmailInFirestore) {
+       throw 'Email já existente';
     }
-    await setPersistence(auth, browserSessionPersistence);
-    createUserWithEmailAndPassword(auth, userData.email, userData.password)
-        .then(async (userCredentials) => {
-            const userModelfromCredentials = new UserModel({
-                email: userCredentials.user.email ?? 'noemail@gmail.com',
-                name: userData.name,
-                UID: userCredentials.user.uid,
-                role: userData.role,
-                team: userData.team
+    else {
+        await setPersistence(auth, browserSessionPersistence);
+        createUserWithEmailAndPassword(auth, userData.email, userData.password)
+            .then(async (userCredentials) => {
+                const userModelfromCredentials = new UserModel({
+                    email: userCredentials.user.email ?? 'noemail@gmail.com',
+                    name: userData.name,
+                    UID: userCredentials.user.uid,
+                    role: userData.role,
+                    team: userData.team
+                })
+
+                //Cria um usuário no firestore com dados adicionais
+                await CreateUserInFirestore(userModelfromCredentials);
+
+
             })
+            .catch(error => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(`Something's wrong when tried call function CreateUserWithEmailPassword\nCode:${errorCode}\nmessage:${errorMessage}`)
 
-            //Cria um usuário no firestore com dados adicionais
-           await CreateUserInFirestore(userModelfromCredentials);
-            
-
-        })
-        .catch(error => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(`Something's wrong when tried call function CreateUserWithEmailPassword\nCode:${errorCode}\nmessage:${errorMessage}`)
-
-        });
+            });
+    }
 }
