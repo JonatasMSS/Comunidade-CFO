@@ -14,10 +14,14 @@ interface IAuthProvider {
 export function AuthProvider({ child }: IAuthProvider) {
 
     const [user, setUser] = useState<UserModel | null>(null)
+    const [tempUser,setTempUser] = useState<User | null>(null);
 
     onAuthStateChanged(FB_Auth, (user) => {
         if (user) {
-            GetUserData(user.uid).then((userExtraData) => {
+
+            setTempUser(tempUser);
+
+            GetUserData(tempUser!.uid).then((userExtraData) => {
                 //Coleto os User's no firestore
                 const userData = userExtraData;
                
