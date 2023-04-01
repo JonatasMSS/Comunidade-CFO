@@ -1,11 +1,12 @@
 
 
-
 interface IUserModel{
     UID:string;
     name:string;
     role:string;
     team:string;
+   
+
     
 }
 

@@ -1,19 +1,20 @@
 import { useMediaQuery } from "react-responsive";
 import { Header } from "../../components/Header";
 import * as Tabs from '@radix-ui/react-tabs';
-import { PostItem } from "../../components/PostItem";
-import FB_Auth from "../../routes/firebase_auth";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { Loader } from "../../components/Loader";
 
 export function PostPage() {
 
     const isSmallScreen = useMediaQuery({ query: '(max-width:640px)' })
     const user = useContext(AuthContext);
 
-    console.log(user);
+    
 
     if (user && user.uid) {
+        
+
         return (
             <div className="w-screen h-screen flex flex-col bg-black-light ">
                 <Header />
@@ -72,8 +73,9 @@ export function PostPage() {
     }
     else {
         return (
-            <div className="w-screen h-screen bg-black flex items-center justify-center text-white font-bold">
-                Não logado
+            
+            <div className="w-screen h-screen fixed z-10 bg-zinc-800">
+                <Loader/>
             </div>
         )
     }

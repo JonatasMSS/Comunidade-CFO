@@ -57,7 +57,7 @@ export function LoginPage() {
     return (
         <>  
             {
-               isLoading &&  <div className="w-screen h-screen fixed">
+               isLoading &&  <div className="w-screen h-screen fixed z-10">
                     <Loader/>
                </div>
             }
@@ -96,7 +96,7 @@ export function LoginPage() {
                         <GoogleLogin loaderState={setLoading} />
 
 
-                        <span className="w-full text-center">Não tem uma conta? <Link className="font-bold text-green-600" to={'/registro'}>Registre-se</Link></span>
+                        <span className="w-full text-center">Não tem uma conta? <Link className="font-bold text-green-600 hover:text-green-400 transition-colors" to={'/registro'}>Registre-se</Link></span>
 
                     </form>
                 </div>
