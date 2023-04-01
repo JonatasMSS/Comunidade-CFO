@@ -82,5 +82,5 @@ export async function GetUserData(id:string) {
 }
 export async function CreateUserInFirestore(userData:UserModel) {
     const usersReference = doc(DB_Firestore,'users',userData.UID);
-    await setDoc(usersReference,userData.toFirestore())
+    await setDoc(usersReference,userData.toFirestore(),{merge:true})
 }

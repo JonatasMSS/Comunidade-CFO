@@ -13,9 +13,13 @@ interface ISignIn {
 }
 
 export async function SignIn({ persistence, ...userData }: ISignIn) {
+   try {
     const auth = FB_Auth;
     await setPersistence(auth, persistence);
     return await signInWithEmailAndPassword(auth, userData.email, userData.password);
+   } catch (error) {
+    console.log(`Something's wrong with SignIn function: ${error}`)
+   }
 }
 export async function SignInWithGoogle(persistence: Persistence = browserSessionPersistence) {
     try {
@@ -27,8 +31,8 @@ export async function SignInWithGoogle(persistence: Persistence = browserSession
             email: userCredentials.user.email ?? 'noemail@gmail.com',
             name: userCredentials.user.displayName ?? 'noname',
             UID: userCredentials.user.uid,
-            role: undefined,
-            team: undefined
+            role: 'norole',
+            team: 'noteam '
         })
         await CreateUserInFirestore(userModelFromCredentials)
 

@@ -20,7 +20,7 @@ export function AuthProvider({ child }: IAuthProvider) {
             GetUserData(user.uid).then((userExtraData) => {
                 //Coleto os User's no firestore
                 const userData = userExtraData;
-                
+               
                 //Defino o usuário com o model
                 setUser(userData);
 
