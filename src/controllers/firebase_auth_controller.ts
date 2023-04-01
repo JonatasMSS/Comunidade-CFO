@@ -1,5 +1,7 @@
 import { GoogleAuthProvider, Persistence, browserSessionPersistence, setPersistence, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import FB_Auth from "../routes/firebase_auth";
+import { CreateUserInFirestore } from "./firebase_controller";
+import UserModel from "../models/user_model";
 
 
 
@@ -15,9 +17,24 @@ export async function SignIn({ persistence, ...userData }: ISignIn) {
     await setPersistence(auth, persistence);
     return await signInWithEmailAndPassword(auth, userData.email, userData.password);
 }
-export async function SingInWithGoogle(persistence: Persistence = browserSessionPersistence) {
-    const google_provider = new GoogleAuthProvider();
-    await setPersistence(FB_Auth, persistence);
-    const userCredentials = await signInWithPopup(FB_Auth, google_provider);
-    
+export async function SignInWithGoogle(persistence: Persistence = browserSessionPersistence) {
+    try {
+        const google_provider = new GoogleAuthProvider();
+
+        await setPersistence(FB_Auth, persistence);
+        const userCredentials = await signInWithPopup(FB_Auth, google_provider);
+        const userModelFromCredentials = new UserModel({
+            email: userCredentials.user.email ?? 'noemail@gmail.com',
+            name: userCredentials.user.displayName ?? 'noname',
+            UID: userCredentials.user.uid,
+            role: undefined,
+            team: undefined
+        })
+        await CreateUserInFirestore(userModelFromCredentials)
+
+
+    } catch (error) {
+        console.log(`Is something wrong when SignIn with google:\n${error}`)
+    }
+
 }
