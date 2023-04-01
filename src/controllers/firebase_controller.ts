@@ -1,4 +1,4 @@
-import { Timestamp, collection, getDocs,doc, getDoc } from "firebase/firestore";
+import { Timestamp, collection, getDocs,doc, getDoc, setDoc } from "firebase/firestore";
 import DB_Firestore from "../routes/firebase_firestore";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
@@ -19,6 +19,7 @@ export async function GetAllPosts() {
             PostList.push(
                 new PostModel({
                     UID: post.id,
+                    userId:post.data().userId,
                     user: post.data().user,
                     title: post.data().title,
                     body: post.data().body,
@@ -70,6 +71,7 @@ export async function GetUserData(id:string) {
     if(userSnap.exists()){
         return new UserModel({
             name:userSnap.data()['name'],
+            email:userSnap.data()['email'],
             role:userSnap.data()['role'],
             team:userSnap.data()['team'],
             UID:userSnap.id
@@ -77,4 +79,8 @@ export async function GetUserData(id:string) {
     }
 
     return null;   
+}
+export async function CreateUserInFirestore(userData:UserModel) {
+    const usersReference = doc(DB_Firestore,'users',userData.UID);
+    await setDoc(usersReference,userData.toFirestore())
 }

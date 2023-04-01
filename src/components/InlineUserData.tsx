@@ -1,6 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import FB_Auth from "../routes/firebase_auth";
-import { User, onAuthStateChanged } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 
 

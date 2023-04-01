@@ -18,5 +18,6 @@ export async function SignIn({ persistence, ...userData }: ISignIn) {
 export async function SingInWithGoogle(persistence: Persistence = browserSessionPersistence) {
     const google_provider = new GoogleAuthProvider();
     await setPersistence(FB_Auth, persistence);
-    return await signInWithPopup(FB_Auth, google_provider);
+    const userCredentials = await signInWithPopup(FB_Auth, google_provider);
+    
 }
