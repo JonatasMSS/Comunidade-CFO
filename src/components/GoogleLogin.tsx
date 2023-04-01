@@ -3,7 +3,7 @@ import { GoogleAuthProvider, browserSessionPersistence, setPersistence, signInWi
 import Google from '../assets/GoogleSimbolo.svg';
 import FB_Auth from '../routes/firebase_auth';
 import { useNavigate } from 'react-router-dom';
-import { SingInWithGoogle } from '../controllers/firebase_auth_controller';
+import { SignInWithGoogle } from '../controllers/firebase_auth_controller';
 import { useMediaQuery } from 'react-responsive';
 
 
@@ -21,7 +21,7 @@ export function GoogleLogin({ loaderState }: IGoogleLogin) {
        
         try {
             loaderState?.(true);
-            await SingInWithGoogle(browserSessionPersistence);
+            await SignInWithGoogle(browserSessionPersistence);
             loaderState?.(false);
             navigate('/posts');
 
