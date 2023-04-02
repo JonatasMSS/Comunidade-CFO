@@ -4,6 +4,7 @@ import { CreateUserInFirestore, GetUserData } from "./firebase_controller";
 import UserModel from "../models/user_model";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
 
 
 
@@ -60,30 +61,28 @@ export async function RegisterUser(userData: IUserRegister) {
     const auth = FB_Auth;
     const verifyEmailInFirestore = await GetUserData(userData.email);
     if (verifyEmailInFirestore) {
-       throw 'Email já existente';
+        throw new EmailAlreadyExistsError('Esse email já está em uso')
     }
-    else {
-        await setPersistence(auth, browserSessionPersistence);
-        createUserWithEmailAndPassword(auth, userData.email, userData.password)
-            .then(async (userCredentials) => {
-                const userModelfromCredentials = new UserModel({
-                    email: userCredentials.user.email ?? 'noemail@gmail.com',
-                    name: userData.name,
-                    UID: userCredentials.user.uid,
-                    role: userData.role,
-                    team: userData.team
-                })
-
-                //Cria um usuário no firestore com dados adicionais
-                await CreateUserInFirestore(userModelfromCredentials);
-
-
+    await setPersistence(auth, browserSessionPersistence);
+    createUserWithEmailAndPassword(auth, userData.email, userData.password)
+        .then(async (userCredentials) => {
+            const userModelfromCredentials = new UserModel({
+                email: userCredentials.user.email ?? 'noemail@gmail.com',
+                name: userData.name,
+                UID: userCredentials.user.uid,
+                role: userData.role,
+                team: userData.team
             })
-            .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(`Something's wrong when tried call function CreateUserWithEmailPassword\nCode:${errorCode}\nmessage:${errorMessage}`)
 
-            });
-    }
+            //Cria um usuário no firestore com dados adicionais
+            await CreateUserInFirestore(userModelfromCredentials);
+
+
+        })
+        .catch(error => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(`Something's wrong when tried call function CreateUserWithEmailPassword\nCode:${errorCode}\nmessage:${errorMessage}`)
+
+        });
 }

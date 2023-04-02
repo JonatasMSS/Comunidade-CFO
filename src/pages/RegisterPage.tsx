@@ -9,11 +9,15 @@ import * as yup from 'yup';
 import { Loader } from '../components/Loader';
 import { RegisterUser } from '../controllers/firebase_auth_controller';
 import { useNavigate } from 'react-router-dom';
+import { EmailAlreadyExistsError } from '../errors/EmailAlreadyExistsError';
 
 export function RegisterPage() {
 
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+
+
     //Form validator
     const validatorSchema = yup.object().shape({
         nickname: yup.string().required('É preciso de um nome'),
@@ -46,8 +50,10 @@ export function RegisterPage() {
                 setLoading(false);
                 navigate('/posts');
             } catch (error) {
-               alert(`Algo de errado no formulário:${error}`)
-               setLoading(false);
+               alert(error);
+               
+            }finally{
+                setLoading(false);
             }
         }
     })
