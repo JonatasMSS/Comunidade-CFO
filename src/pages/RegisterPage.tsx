@@ -8,8 +8,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Loader } from '../components/Loader';
 import { RegisterUser } from '../controllers/firebase_auth_controller';
-import { useNavigate } from 'react-router-dom';
-
+import { redirect, useNavigate } from 'react-router-dom';
+import { ArrowCircleLeft } from '@phosphor-icons/react';
 
 export function RegisterPage() {
 
@@ -67,7 +67,10 @@ export function RegisterPage() {
             <div className='  pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
                 {/* Form section */}
                 <div className='w-full  flex flex-col items-center'>
-                    <div className='flex'>
+                    <div className='flex items-center'>
+                        <button
+                            onClick={() => navigate('/login')}
+                        ><ArrowCircleLeft color='#FFFFFF' size={38}/></button>
                         <span className='text-white my-10 mx-2  font-K2D font-bold text-3xl'>Crie sua conta na comunidade!</span>
                     </div>
                     <form onSubmit={formValidation.handleSubmit} className='w-4/5 flex flex-col items-center gap-3 bg-DF-black rounded-lg text-white font-K2D p-5 '>
