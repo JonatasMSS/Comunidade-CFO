@@ -10,6 +10,7 @@
     "test": "tsx ./src/controllers/firebase_controller.ts"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.0.8",
     "@radix-ui/react-tabs": "^1.0.3",
     "dotenv": "^16.0.3",
     "firebase": "^9.18.0",

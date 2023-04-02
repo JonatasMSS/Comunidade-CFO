@@ -5,6 +5,7 @@ import UserModel from "../models/user_model";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
+import { EmailNotVerified } from "../errors/EmailNotVerified";
 
 
 
@@ -17,8 +18,13 @@ interface ISignIn {
 
 export async function SignIn({ persistence, ...userData }: ISignIn) {
 
-
     const auth = FB_Auth;
+    if(!auth.currentUser?.emailVerified){
+        console.log(`Email não verificado`);
+        
+    }
+
+
     await setPersistence(auth, persistence);
     return await signInWithEmailAndPassword(auth, userData.email, userData.password);
 
