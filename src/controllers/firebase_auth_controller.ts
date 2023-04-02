@@ -21,6 +21,7 @@ export async function SignIn({ persistence, ...userData }: ISignIn) {
     const auth = FB_Auth;
     if(!auth.currentUser?.emailVerified){
         console.log(`Email não verificado`);
+        throw new EmailNotVerified('Email não foi verificado');
         
     }
 
@@ -77,9 +78,15 @@ export async function RegisterUser(userData: IUserRegister) {
                 name: userData.name,
                 UID: userCredentials.user.uid,
                 role: userData.role,
-                team: userData.team
+                team: userData.team,
+                
             })
-
+            
+            //Envia email de verificação
+            if(auth.currentUser){
+               await sendEmailVerification(auth.currentUser)
+            }
+            
             //Cria um usuário no firestore com dados adicionais
             await CreateUserInFirestore(userModelfromCredentials);
 

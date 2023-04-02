@@ -10,6 +10,8 @@ import { Loader } from '../components/Loader';
 import { RegisterUser } from '../controllers/firebase_auth_controller';
 import { redirect, useNavigate } from 'react-router-dom';
 import { ArrowCircleLeft } from '@phosphor-icons/react';
+import { signOut } from 'firebase/auth';
+import FB_Auth from '../routes/firebase_auth';
 
 export function RegisterPage() {
 
@@ -48,7 +50,8 @@ export function RegisterPage() {
                     team: formData.team
                 })
                 setLoading(false);
-                navigate('/posts');
+                signOut(FB_Auth);
+                navigate('/registro/redirection');
             } catch (error) {
                 alert(error);
 
@@ -67,7 +70,7 @@ export function RegisterPage() {
             <div className='  pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
                 {/* Form section */}
                 <div className='w-full  flex flex-col items-center'>
-                    <div className='flex items-center'>
+                    <div className='flex items-center px-5 sm:px-0'>
                         <button
                             onClick={() => navigate('/login')}
                         ><ArrowCircleLeft color='#FFFFFF' size={38}/></button>

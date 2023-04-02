@@ -45,7 +45,7 @@ export function LoginPage() {
                 navigator('/posts');
             } catch (error) {
                 setLoading(false);
-                alert('Senha ou usuário incorretos')
+                alert(error)
             }
         }
     })
