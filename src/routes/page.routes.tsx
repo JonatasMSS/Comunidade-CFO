@@ -7,6 +7,7 @@ import { RegisterPage } from '../pages/RegisterPage';
 import { PostPage } from '../pages/post_page/PostPage';
 import { AuthProvider } from '../context/AuthContext';
 import { RedirectionLinkPage } from '../pages/RedirectionLinkPage';
+import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 
 const routes = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ const routes = createBrowserRouter([
     {
         path:'registro/redirection',
         element:<RedirectionLinkPage/>
+    },
+    {
+        path:'forgotpassword',
+        element:<ForgotPasswordPage/>
     }
 ])
 
