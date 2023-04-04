@@ -19,7 +19,7 @@ export function LoginPage() {
 
     const navigator = useNavigate()
     const [isLoading, setLoading] = useState(false);
-    
+
 
 
 
@@ -39,8 +39,8 @@ export function LoginPage() {
         onSubmit: async (values) => {
             try {
                 setLoading(true);
-                await SignIn({persistence:browserSessionPersistence,email:values.email,password:values.password})
-                
+                await SignIn({ persistence: browserSessionPersistence, email: values.email, password: values.password })
+
                 setLoading(false);
                 navigator('/posts');
             } catch (error) {
@@ -50,17 +50,17 @@ export function LoginPage() {
         }
     })
 
-    
+
 
 
 
 
     return (
-        <>  
+        <>
             {
-               isLoading &&  <div className="w-screen h-screen fixed z-10">
-                    <Loader/>
-               </div>
+                isLoading && <div className="w-screen h-screen fixed z-10">
+                    <Loader />
+                </div>
             }
             <div className=' pb-2 overflow-auto bg-black flex flex-col-reverse lg:flex-row justify-center items-center'>
                 {/*  Login section */}
@@ -86,7 +86,7 @@ export function LoginPage() {
                             error={formValidation.touched.password && formValidation.errors.password ? formValidation.errors.password : ''}
 
                         />
-                        <span className='font-semibold w-full text-center text-red-400'>Esqueci minha senha</span>
+                        <Link to={'/forgotpassword'}><span className='font-semibold w-full text-center text-red-400 hover:text-red-300 transition-colors'>Esqueci minha senha</span></Link>
 
 
                         <SubmitButton
