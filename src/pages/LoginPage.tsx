@@ -14,6 +14,7 @@ import FB_Auth from "../routes/firebase_auth";
 import { useState } from "react";
 import { Loader } from "../components/Loader";
 import { SignIn } from "../controllers/firebase_auth_controller";
+import { FirebaseError } from "firebase/app";
 
 export function LoginPage() {
 
@@ -44,8 +45,16 @@ export function LoginPage() {
                 setLoading(false);
                 navigator('/posts');
             } catch (error) {
+                if(error instanceof FirebaseError && error.code == 'auth/wrong-password'){
+                    alert('Senha incorreta');
+                }else if(error instanceof FirebaseError && error.code == 'auth/too-many-requests'){
+                    alert('Sinto muito, mas após muitas tentativas o seu acesso foi temporariamente desativado. Resete sua senha ou aguarde um tempo para poder acessar novamente');
+                }
+                else{
+                    alert(error);
+                }
+            }finally{
                 setLoading(false);
-                alert(error)
             }
         }
     })

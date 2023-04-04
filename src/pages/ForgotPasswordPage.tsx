@@ -43,7 +43,11 @@ export function ForgotPasswordPage() {
                 await sendPasswordResetEmail(FB_Auth,formData.email)
                 alert('Link de redefinição enviado com sucesso a sua caixa de entrada!');
             } catch (error) {
+               if(error instanceof EmailNotInFirestore){
+                 alert(error);
+               }else{
                 alert(`Ocorreu um erro na redefinição:${error}`);
+               }
             }finally{
                 setLoading(false);
             }

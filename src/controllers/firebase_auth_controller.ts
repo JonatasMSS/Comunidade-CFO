@@ -19,10 +19,8 @@ interface ISignIn {
 export async function SignIn({ persistence, ...userData }: ISignIn) {
 
     const auth = FB_Auth;
-    if(!auth.currentUser?.emailVerified){
-        console.log(`Email não verificado`);
+    if(!auth.currentUser?.emailVerified && auth.currentUser?.uid){
         throw new EmailNotVerified('Email não foi verificado');
-        
     }
 
 
