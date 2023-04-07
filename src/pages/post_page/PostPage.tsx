@@ -23,7 +23,7 @@ export function PostPage() {
         await FB_Auth.signOut()
         setLoading(false);
         navigate('/')
-        
+
     }
 
 
@@ -58,6 +58,8 @@ export function PostPage() {
                                         Recentes
                                     </Tabs.Trigger>
                                 </Tabs.List>
+
+                                {/* Conteudo de dados em alta */}
                                 <Tabs.Content value="em_alta" className="w-full flex flex-col py-5">
 
 
@@ -73,7 +75,7 @@ export function PostPage() {
                         {
                             !isSmallScreen && <div className="w-5/12 h-fit p-5 gap-3   bg-white rounded-lg flex flex-col justify-center items-center font-K2D text-black">
                                 {/*Image section  */}
-                                <div className="w-44 h-44 sm:w-32 sm:h-32 bg-gray-500 rounded-full" />
+                                {FB_Auth.currentUser?.photoURL ? <img src={FB_Auth.currentUser.photoURL} className="rounded-full w-40" /> : <div className="w-44 h-44 sm:w-32 sm:h-32 bg-gray-500 rounded-full" />}
                                 <span className="font-semibold lg:text-xl  w-full text-center">{user.name}</span>
 
                                 {/* Data section */}
@@ -82,9 +84,9 @@ export function PostPage() {
                                 <span className="text-lg w-full">Função: {user.role}</span>
 
 
-                                <button 
-                                onClick={signOut}
-                                className="bg-red-500 px-5 py-2 rounded-lg font-bold">
+                                <button
+                                    onClick={signOut}
+                                    className="bg-red-500 px-5 py-2 rounded-lg font-bold">
                                     Logout
                                 </button>
                             </div>

@@ -43,6 +43,7 @@ export async function SignInWithGoogle(persistence: Persistence = browserSession
     //Verificar se a o user já existe no Firestore
     const verifyUserInFirestore = await GetUserData(userCredentials.user.email);
 
+
     if (!verifyUserInFirestore) {
         const userModelFromCredentials = new UserModel({
             email: userCredentials.user.email ?? 'noemail@gmail.com',

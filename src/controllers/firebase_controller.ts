@@ -80,18 +80,11 @@ export async function GetUserData(email:string | null) {
 
     return null;   
 }
-
-
-
 export async function CreateUserInFirestore(userData:UserModel) {
     //Cria dados extras dos usuários usando email com identificador unico
     const usersReference = doc(DB_Firestore,'users',userData.email);
     await setDoc(usersReference,userData.toFirestore())
 }
-
-
-
-
 interface IDataUserEditable{
     role?:string,
     team?:string,
