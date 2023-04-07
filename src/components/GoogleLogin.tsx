@@ -23,8 +23,28 @@ export function GoogleLogin({ loaderState }: IGoogleLogin) {
         try {
             loaderState?.(true);
             await SignInWithGoogle(browserSessionPersistence);
-            loaderState?.(false);
-            navigate('/googlesignin');
+            
+
+
+            //Busca no firestore os campos times e função
+            const haveTeamOrRole =  await GetUserData(FB_Auth.currentUser!.email).then((user) => {
+                return {
+                    role: user?.role,
+                    team:user?.team
+                }
+            });
+
+            
+            
+            if(haveTeamOrRole.role === "norole" || haveTeamOrRole.team === "noteam"){
+                loaderState?.(false);
+                navigate('/googlesignin');
+            }else{
+                loaderState?.(false);
+                navigate('/posts');
+            }
+            
+            
 
         } catch (error) {
             console.log(error);
