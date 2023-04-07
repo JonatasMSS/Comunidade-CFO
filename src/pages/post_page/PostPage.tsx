@@ -1,11 +1,13 @@
 import { useMediaQuery } from "react-responsive";
 import { Header } from "../../components/Header";
 import * as Tabs from '@radix-ui/react-tabs';
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Loader } from "../../components/Loader";
 import FB_Auth from "../../routes/firebase_auth";
 import { useNavigate } from "react-router-dom";
+import PostModel from "../../models/post_model";
+import { GetAllPosts } from "../../controllers/firebase_controller";
 
 
 export function PostPage() {
@@ -14,7 +16,7 @@ export function PostPage() {
     const user = useContext(AuthContext);
     const navigate = useNavigate();
 
-
+    const [posts,setPosts] = useState<PostModel[] | undefined>([]);
     const [isloading, setLoading] = useState(false);
 
 
@@ -26,6 +28,15 @@ export function PostPage() {
 
     }
 
+
+    useEffect(() => {
+        setLoading(true);
+        GetAllPosts().then((posts) =>{
+            setPosts(posts)
+        }).finally(() => {
+            setLoading(false);
+        })
+    },[])
 
 
 
