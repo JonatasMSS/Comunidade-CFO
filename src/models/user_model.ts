@@ -3,8 +3,8 @@
 interface IUserModel{
     UID:string;
     name:string;
-    role?:string | undefined;
-    team?:string | undefined;
+    role?:string | null;
+    team?:string | null;
     email:string;
    
 }
@@ -12,8 +12,8 @@ interface IUserModel{
 class UserModel{
     UID:string;
     name:string;
-    role?:string | undefined;
-    team?:string | undefined;
+    role?:string | null;
+    team?:string | null;
     email:string;
  
 

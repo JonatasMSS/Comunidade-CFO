@@ -5,6 +5,7 @@ import FB_Auth from '../routes/firebase_auth';
 import { useNavigate } from 'react-router-dom';
 import { SignInWithGoogle } from '../controllers/firebase_auth_controller';
 import { useMediaQuery } from 'react-responsive';
+import { GetUserData } from '../controllers/firebase_controller';
 
 
 interface IGoogleLogin {
@@ -23,9 +24,10 @@ export function GoogleLogin({ loaderState }: IGoogleLogin) {
             loaderState?.(true);
             await SignInWithGoogle(browserSessionPersistence);
             loaderState?.(false);
-            navigate('/posts');
+            navigate('/googlesignin');
 
         } catch (error) {
+            console.log(error);
             alert(`Aconteceu um erro na autenticação:${error}`)
             loaderState?.(false);
         }

@@ -8,6 +8,7 @@ import { PostPage } from '../pages/post_page/PostPage';
 import { AuthProvider } from '../context/AuthContext';
 import { RedirectionLinkPage } from '../pages/RedirectionLinkPage';
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
+import { RegisterFromGooglePage } from '../pages/RegisterFromGooglePage';
 
 const routes = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const routes = createBrowserRouter([
     {
         path:'forgotpassword',
         element:<ForgotPasswordPage/>
+    },
+    {
+        path:'googlesignin',
+        element:<RegisterFromGooglePage/>
     }
 ])
 

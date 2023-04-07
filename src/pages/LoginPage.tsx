@@ -10,7 +10,7 @@ import MainFoto from '../assets/Principal.jpg';
 import { GoogleLogin } from "../components/GoogleLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { browserSessionPersistence, setPersistence, signInWithEmailAndPassword } from "firebase/auth";
-import FB_Auth from "../routes/firebase_auth";
+
 import { useState } from "react";
 import { Loader } from "../components/Loader";
 import { SignIn } from "../controllers/firebase_auth_controller";

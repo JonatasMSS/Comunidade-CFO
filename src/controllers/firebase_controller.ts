@@ -1,4 +1,4 @@
-import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where } from "firebase/firestore";
+import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where, updateDoc } from "firebase/firestore";
 import DB_Firestore from "../routes/firebase_firestore";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
@@ -87,4 +87,24 @@ export async function CreateUserInFirestore(userData:UserModel) {
     //Cria dados extras dos usuários usando email com identificador unico
     const usersReference = doc(DB_Firestore,'users',userData.email);
     await setDoc(usersReference,userData.toFirestore())
+}
+
+
+
+
+interface IDataUserEditable{
+    role?:string,
+    team?:string,
+    name?:string
+}
+export async function UpdateUserInFirestore(userData:IDataUserEditable, userEmail:string){
+
+    //Só é permitido alterar o time (team), a função(role) e o nickname.
+
+    const usersReference = doc(DB_Firestore,'users',userEmail);
+    await updateDoc(usersReference,{
+        role:userData.role ?? 'no role',
+        team:userData.team ?? 'no team',
+        name: userData.name ??'no name'
+    });
 }

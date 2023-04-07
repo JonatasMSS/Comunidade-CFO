@@ -16,6 +16,7 @@ export function AuthProvider({ child }: IAuthProvider) {
     const [user, setUser] = useState<UserModel | null>(null)
 
     onAuthStateChanged(FB_Auth, (user) => {
+        
         if (user) {
             GetUserData(user!.email).then((userExtraData) => {
                 //Coleto os User's no firestore

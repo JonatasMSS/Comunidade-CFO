@@ -19,7 +19,7 @@ interface ISignIn {
 export async function SignIn({ persistence, ...userData }: ISignIn) {
 
     const auth = FB_Auth;
-    if(!auth.currentUser?.emailVerified && auth.currentUser?.uid){
+    if (!auth.currentUser?.emailVerified && auth.currentUser?.uid) {
         throw new EmailNotVerified('Email não foi verificado');
     }
 
@@ -30,24 +30,23 @@ export async function SignIn({ persistence, ...userData }: ISignIn) {
 
 }
 export async function SignInWithGoogle(persistence: Persistence = browserSessionPersistence) {
-    try {
-        const google_provider = new GoogleAuthProvider();
 
-        await setPersistence(FB_Auth, persistence);
-        const userCredentials = await signInWithPopup(FB_Auth, google_provider);
-        const userModelFromCredentials = new UserModel({
-            email: userCredentials.user.email ?? 'noemail@gmail.com',
-            name: userCredentials.user.displayName ?? 'noname',
-            UID: userCredentials.user.uid,
-            role: 'norole',
-            team: 'noteam '
-        })
-        await CreateUserInFirestore(userModelFromCredentials)
+    const auth = FB_Auth;
+    const google_provider = new GoogleAuthProvider();
+    //Define a persistencia de dados para apenas sessão
+    await setPersistence(auth, persistence);
+    //Busca as credenciais a partir de uma pop up de login do google
+    const userCredentials = await signInWithPopup(FB_Auth, google_provider);
+    const userModelFromCredentials = new UserModel({
+        email: userCredentials.user.email ?? 'noemail@gmail.com',
+        name: userCredentials.user.displayName ?? 'noname',
+        UID: userCredentials.user.uid,
+        role: 'norole',
+        team: 'noteam '
+    })
+    await CreateUserInFirestore(userModelFromCredentials)
 
 
-    } catch (error) {
-        console.log(`Is something wrong when SignIn with google:\n${error}`)
-    }
 
 }
 
@@ -65,6 +64,8 @@ interface IUserRegister {
 export async function RegisterUser(userData: IUserRegister) {
     const auth = FB_Auth;
     const verifyEmailInFirestore = await GetUserData(userData.email);
+
+    //Verificar se o email existe
     if (verifyEmailInFirestore) {
         throw new EmailAlreadyExistsError('Esse email já está em uso')
     }
@@ -77,14 +78,14 @@ export async function RegisterUser(userData: IUserRegister) {
                 UID: userCredentials.user.uid,
                 role: userData.role,
                 team: userData.team,
-                
+
             })
-            
+
             //Envia email de verificação
-            if(auth.currentUser){
-               await sendEmailVerification(auth.currentUser)
+            if (auth.currentUser) {
+                await sendEmailVerification(auth.currentUser)
             }
-            
+
             //Cria um usuário no firestore com dados adicionais
             await CreateUserInFirestore(userModelfromCredentials);
 
