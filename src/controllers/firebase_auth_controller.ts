@@ -19,6 +19,8 @@ interface ISignIn {
 export async function SignIn({ persistence, ...userData }: ISignIn) {
 
     const auth = FB_Auth;
+
+    //Tratamento de erros
     if (!auth.currentUser?.emailVerified && auth.currentUser?.uid) {
         throw new EmailNotVerified('Email não foi verificado');
     }
@@ -37,14 +39,23 @@ export async function SignInWithGoogle(persistence: Persistence = browserSession
     await setPersistence(auth, persistence);
     //Busca as credenciais a partir de uma pop up de login do google
     const userCredentials = await signInWithPopup(FB_Auth, google_provider);
-    const userModelFromCredentials = new UserModel({
-        email: userCredentials.user.email ?? 'noemail@gmail.com',
-        name: userCredentials.user.displayName ?? 'noname',
-        UID: userCredentials.user.uid,
-        role: 'norole',
-        team: 'noteam '
-    })
-    await CreateUserInFirestore(userModelFromCredentials)
+
+    //Verificar se a o user já existe no Firestore
+    const verifyUserInFirestore = await GetUserData(userCredentials.user.email);
+
+    if (!verifyUserInFirestore) {
+        const userModelFromCredentials = new UserModel({
+            email: userCredentials.user.email ?? 'noemail@gmail.com',
+            name: userCredentials.user.displayName ?? 'noname',
+            UID: userCredentials.user.uid,
+            role: 'norole',
+            team: 'noteam '
+        })
+        await CreateUserInFirestore(userModelFromCredentials)
+    }
+
+
+
 
 
 
@@ -69,9 +80,15 @@ export async function RegisterUser(userData: IUserRegister) {
     if (verifyEmailInFirestore) {
         throw new EmailAlreadyExistsError('Esse email já está em uso')
     }
+
+    //Muda a persistencia do auth
     await setPersistence(auth, browserSessionPersistence);
+
+
     createUserWithEmailAndPassword(auth, userData.email, userData.password)
         .then(async (userCredentials) => {
+
+
             const userModelfromCredentials = new UserModel({
                 email: userCredentials.user.email ?? 'noemail@gmail.com',
                 name: userData.name,
