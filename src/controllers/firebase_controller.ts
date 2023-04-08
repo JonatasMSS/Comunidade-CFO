@@ -65,6 +65,33 @@ export async function GetAllComments() {
         console.log("Algo deu errado -> ", error);
     }
 }
+
+export async function GetCommentsInPost(postUID:string) {
+    const commentsReference =   collection(DB_Firestore,'comments');
+    const commentsQuery = query(commentsReference,where("postReference","==",postUID));
+    const commentsSnapshot = await getDocs(commentsQuery);
+
+    let comments:CommentModel[] = [];
+    
+
+    if(!commentsSnapshot.empty){
+        commentsSnapshot.forEach(comment => {
+            comments.push(
+                new CommentModel({
+                    body:comment.data().body,
+                    commentTime:comment.data().time,
+                    likes:comment.data().likes,
+                    user:comment.data().name,
+                    UID:comment.id,
+                    postReference:comment.data().postReference
+                })
+            )
+        })
+        return comments;
+    }
+    return null
+}
+
 export async function GetUserData(email:string | null) {
     const userReference = doc(DB_Firestore,'users',email ?? '');
     const userSnap = await getDoc(userReference)

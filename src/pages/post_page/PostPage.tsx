@@ -88,6 +88,7 @@ export function PostPage() {
 
                                                 return (
                                                     <PostItem
+                                                    key={post.UID}
                                                     team={post.team}
                                                     username={post.user}
                                                     timepost={diferenceBetweenTodayAndPostTime}
