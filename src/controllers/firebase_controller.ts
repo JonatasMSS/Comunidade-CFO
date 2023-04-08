@@ -19,6 +19,7 @@ export async function GetAllPosts() {
             PostList.push(
                 new PostModel({
                     UID: post.id,
+                    team:post.data().team,
                     userId:post.data().userId,
                     user: post.data().user,
                     title: post.data().title,
