@@ -4,6 +4,8 @@ import Comment from '../assets/icons/🦆 icon _message_.svg';
 
 
 interface IPostItem{
+    title:string;
+    body:string;
     username:string;
     team:string;
     timepost:string;
@@ -20,12 +22,12 @@ export function PostItem({...props}:IPostItem) {
             <div className="flex items-baseline md:gap-2">
                 {/* User and team */}
                 <div className="flex flex-col md:flex-row md:items-baseline md:gap-2">
-                    <span className="font-bold text-sm md:text-base ">User's name</span>
-                    <span className="font-medium text-sm">Equipe criadores</span>
+                    <span className="font-bold text-sm md:text-base ">{props.username}</span>
+                    <span className="font-medium text-sm">{props.team}</span>
                 </div>
 
                 {/* Time */}
-                <span className="text-sm text-zinc-700">Hora da postagem</span>
+                <span className="text-sm text-zinc-700">{props.timepost}</span>
 
             </div>
 
@@ -34,8 +36,8 @@ export function PostItem({...props}:IPostItem) {
 
             {/* Post Body */}
             <div className="w-full flex flex-col">
-                <span className="font-bold">Titulo do post</span>
-                <p className="text-sm font-light text-start break-words max-h-16 text-red-500 overflow-hidden">{Array.from({ length: 400 }).map(e => 'Lorem ipsum')}</p>
+                <span className="font-bold">{props.title}</span>
+                <p className="text-sm font-light text-start break-words max-h-16 text-red-500 overflow-hidden">{props.body}</p>
             </div>
 
             {/* Like Commment section */}
@@ -43,12 +45,12 @@ export function PostItem({...props}:IPostItem) {
                 {/* Likes */}
                 <div className="flex gap-1">
                     <img src={Like} alt="Like" className="w-6" />
-                    <span className="font-light">23</span>
+                    <span className="font-light">{props.likes}</span>
                 </div>
                 {/* Commentarios */}
                 <div className="flex gap-1">
                     <img src={Comment} alt="Coment" className="w-6" />
-                    <span className="font-light"> 44 comentários</span>
+                    <span className="font-light">{props.comments}</span>
                 </div>
             </div>
         </div>
