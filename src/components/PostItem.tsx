@@ -27,7 +27,7 @@ export function PostItem({...props}:IPostItem) {
                 </div>
 
                 {/* Time */}
-                <span className="text-sm text-zinc-700">{props.timepost}</span>
+                <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{props.timepost}</span>
 
             </div>
 
