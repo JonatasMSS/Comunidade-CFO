@@ -8,7 +8,10 @@ import FB_Auth from "../../routes/firebase_auth";
 import { useNavigate } from "react-router-dom";
 import PostModel from "../../models/post_model";
 import { GetAllPosts } from "../../controllers/firebase_controller";
-
+import { PostItem } from "../../components/PostItem";
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 export function PostPage() {
 
@@ -16,7 +19,8 @@ export function PostPage() {
     const user = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const [posts,setPosts] = useState<PostModel[] | undefined>([]);
+
+    const [posts, setPosts] = useState<PostModel[] | undefined>([]);
     const [isloading, setLoading] = useState(false);
 
 
@@ -29,14 +33,18 @@ export function PostPage() {
     }
 
 
+    
+
+
     useEffect(() => {
-        setLoading(true);
-        GetAllPosts().then((posts) =>{
+        GetAllPosts().then((posts) => {
             setPosts(posts)
-        }).finally(() => {
-            setLoading(false);
         })
-    },[])
+
+
+    }, [])
+
+
 
 
 
@@ -72,10 +80,26 @@ export function PostPage() {
 
                                 {/* Conteudo de dados em alta */}
                                 <Tabs.Content value="em_alta" className="w-full flex flex-col py-5">
+                                    {
+                                        posts ?
+                                            posts.map(post => {
+                                                const postTime = dayjs(post.postTime);
+                                                const diferenceBetweenTodayAndPostTime = postTime.toNow();
 
+                                                return (
+                                                    <PostItem
+                                                    team={post.team}
+                                                    username={post.user}
+                                                    timepost={diferenceBetweenTodayAndPostTime}
+                                                    title={post.title}
+                                                    body={post.body}
+                                                    comments={'32'}
+                                                    likes={post.likes}
 
-
-
+                                                />
+                                                )
+                                            }) : <Loader/>
+                                    }
                                 </Tabs.Content>
                             </Tabs.Root>
 
