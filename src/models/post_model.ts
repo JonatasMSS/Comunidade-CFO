@@ -3,6 +3,7 @@ interface IPostModel {
 
     UID: string;
     user: string;
+    team:string;
     userId:string;
     title: string;
     body: string;
@@ -14,6 +15,7 @@ interface IPostModel {
 class PostModel {
     UID: string;
     user: string;
+    team:string;
     userId:string;
     title: string;
     body: string;
@@ -27,6 +29,7 @@ class PostModel {
         this.likes = props.likes;
         this.postTime = props.postTime;
         this.userId = props.userId;
+        this.team = props.team;
     }
 
 }
