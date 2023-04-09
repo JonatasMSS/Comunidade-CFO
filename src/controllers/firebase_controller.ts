@@ -1,9 +1,45 @@
-import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where, updateDoc } from "firebase/firestore";
+import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where, updateDoc, orderBy, OrderByDirection } from "firebase/firestore";
 import DB_Firestore from "../routes/firebase_firestore";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
 import UserModel from "../models/user_model";
 
+
+
+export async function QueryGetPost(queryData:string,direction?:OrderByDirection){
+
+    let queriedPosts:PostModel[] = [];
+
+    const postRefence = collection(DB_Firestore,'posts');
+    const postQuery = query(postRefence,orderBy(queryData,direction))
+    const postSnap = await getDocs(postQuery);
+
+    if(!postSnap.empty){
+        postSnap.forEach(post => {
+            const { seconds, nanoseconds } = post.data().postTime;
+            const convertedTime = new Timestamp(seconds, nanoseconds).toDate();
+    
+            //Empurra os dados para uma lista criada anteriormente
+            queriedPosts.push(
+                new PostModel({
+                    UID: post.id,
+                    team:post.data().team,
+                    userId:post.data().userId,
+                    user: post.data().user,
+                    title: post.data().title,
+                    body: post.data().body,
+                    likes: post.data().likes,
+                    postTime: convertedTime,
+    
+                })
+            )
+        })
+        return queriedPosts;
+    }
+    return null;
+    
+
+}
 
 export async function GetAllPosts() {
     try {

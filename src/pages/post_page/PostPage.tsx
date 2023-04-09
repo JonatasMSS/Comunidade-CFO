@@ -7,7 +7,7 @@ import { Loader } from "../../components/Loader";
 import FB_Auth from "../../routes/firebase_auth";
 import { useNavigate } from "react-router-dom";
 import PostModel from "../../models/post_model";
-import { GetAllPosts } from "../../controllers/firebase_controller";
+import { GetAllPosts, GetCommentsInPost, QueryGetPost } from "../../controllers/firebase_controller";
 import { PostItem } from "../../components/PostItem";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -20,7 +20,7 @@ export function PostPage() {
     const navigate = useNavigate();
 
 
-    const [posts, setPosts] = useState<PostModel[] | undefined>([]);
+    const [posts, setPosts] = useState<{ relevant: JSX.Element[], recent: JSX.Element[] } | undefined>();
     const [isloading, setLoading] = useState(false);
 
 
@@ -33,12 +33,60 @@ export function PostPage() {
     }
 
 
-    
-
-
     useEffect(() => {
-        GetAllPosts().then((posts) => {
-            setPosts(posts)
+        GetAllPosts().then(async (posts) => {
+
+            let relevantPost: JSX.Element[] = [];
+            let recentPost: JSX.Element[] = [];
+
+            await QueryGetPost('likes', 'desc').then((postIn) => {
+                postIn?.map(async (post) => {
+                    const postTime = dayjs(post.postTime);
+                    const differenceBetweenPostTimeAndToday = postTime.toNow();
+                    const commentsInPost = await GetCommentsInPost(post.UID);
+    
+                    relevantPost.push(
+                        <PostItem
+                            key={post.userId}
+                            body={post.body}
+                            comments={commentsInPost?.length.toString() ?? '0'}
+                            likes={post.likes}
+                            team={post.team}
+                            timepost={differenceBetweenPostTimeAndToday}
+                            title={post.title}
+                            username={post.user}
+                        />
+                    )
+                })
+            })
+            await QueryGetPost('postTime','desc').then((postIn) => {
+                postIn?.map(async (post) => {
+                    const postTime = dayjs(post.postTime);
+                    const differenceBetweenPostTimeAndToday = postTime.toNow();
+                    const commentsInPost = await GetCommentsInPost(post.UID);
+    
+                    recentPost.push(
+                        <PostItem
+                            key={post.userId}
+                            body={post.body}
+                            comments={commentsInPost?.length.toString() ?? '0'}
+                            likes={post.likes}
+                            team={post.team}
+                            timepost={differenceBetweenPostTimeAndToday}
+                            title={post.title}
+                            username={post.user}
+                        />
+                    )
+                })
+            })
+
+           
+
+            
+
+        
+
+            setPosts({ relevant: relevantPost, recent: recentPost });
         })
 
 
@@ -55,7 +103,7 @@ export function PostPage() {
             <>
                 {isloading && <div className="w-screen h-screen fixed z-10 bg-zinc-700/50"><Loader /></div>}
 
-                <div className="w-screen h-screen flex flex-col bg-black-light ">
+                <div className=" min-h-screen overflow-auto flex flex-col bg-black-light ">
                     <Header />
 
                     {/* Body section */}
@@ -79,29 +127,18 @@ export function PostPage() {
                                 </Tabs.List>
 
                                 {/* Conteudo de dados em alta */}
-                                <Tabs.Content value="em_alta" className="w-full flex flex-col py-5">
+                                <Tabs.Content value="em_alta" className="w-full flex flex-col py-5 gap-5">
                                     {
-                                        posts ?
-                                            posts.map(post => {
-                                                const postTime = dayjs(post.postTime);
-                                                const diferenceBetweenTodayAndPostTime = postTime.toNow();
-
-                                                return (
-                                                    <PostItem
-                                                    key={post.UID}
-                                                    team={post.team}
-                                                    username={post.user}
-                                                    timepost={diferenceBetweenTodayAndPostTime}
-                                                    title={post.title}
-                                                    body={post.body}
-                                                    comments={'32'}
-                                                    likes={post.likes}
-
-                                                />
-                                                )
-                                            }) : <Loader/>
+                                        posts?.relevant ? posts.relevant.map(relevantPost => relevantPost) : <Loader />
                                     }
                                 </Tabs.Content>
+                                {/* Conteudos de dados recentes */}
+                                <Tabs.Content value="recentes" className="w-full flex flex-col  gap-5">
+                                    {
+                                        posts?.recent ? posts.recent.map(recentPost => recentPost) : <Loader />
+                                    }
+                                </Tabs.Content>
+
                             </Tabs.Root>
 
 
