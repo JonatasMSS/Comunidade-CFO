@@ -1,4 +1,5 @@
 
+import { Link, Outlet } from 'react-router-dom';
 import Like from '../assets/icons/🦆 icon _heart_.svg';
 import Comment from '../assets/icons/🦆 icon _message_.svg';
 
@@ -28,7 +29,9 @@ export function PostItem({...props}:IPostItem) {
 
                 {/* Time */}
                 <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{props.timepost}</span>
-
+                <div className='flex justify-end '>
+                    <Link to={`${props.username}/details`} className='font-bold text-blue-700'>Ver post completo</Link>
+                </div>
             </div>
 
             {/* Separator */}
@@ -53,6 +56,9 @@ export function PostItem({...props}:IPostItem) {
                     <span className="font-light">{props.comments}</span>
                 </div>
             </div>
+
+
+           
         </div>
     )
 }

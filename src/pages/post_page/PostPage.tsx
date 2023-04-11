@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Loader } from "../../components/Loader";
 import FB_Auth from "../../routes/firebase_auth";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import PostModel from "../../models/post_model";
 import { GetAllPosts, GetCommentsInPost, QueryGetPost } from "../../controllers/firebase_controller";
 import { PostItem } from "../../components/PostItem";
@@ -44,7 +44,7 @@ export function PostPage() {
                     const postTime = dayjs(post.postTime);
                     const differenceBetweenPostTimeAndToday = postTime.toNow();
                     const commentsInPost = await GetCommentsInPost(post.UID);
-    
+
                     relevantPost.push(
                         <PostItem
                             key={post.userId}
@@ -59,12 +59,12 @@ export function PostPage() {
                     )
                 })
             })
-            await QueryGetPost('postTime','desc').then((postIn) => {
+            await QueryGetPost('postTime', 'desc').then((postIn) => {
                 postIn?.map(async (post) => {
                     const postTime = dayjs(post.postTime);
                     const differenceBetweenPostTimeAndToday = postTime.toNow();
                     const commentsInPost = await GetCommentsInPost(post.UID);
-    
+
                     recentPost.push(
                         <PostItem
                             key={post.userId}
@@ -80,11 +80,11 @@ export function PostPage() {
                 })
             })
 
-           
 
-            
 
-        
+
+
+
 
             setPosts({ relevant: relevantPost, recent: recentPost });
         })
@@ -165,6 +165,7 @@ export function PostPage() {
                             </div>
                         }
                     </div>
+                   
                 </div>
 
             </>

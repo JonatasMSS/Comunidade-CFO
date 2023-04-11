@@ -67,7 +67,7 @@ export function LoginPage() {
     return (
         <>
             {
-                isLoading && <div className="w-screen h-screen fixed z-10">
+                isLoading && <div className="w-screen h-screen bg-zinc-500/50 fixed z-10">
                     <Loader />
                 </div>
             }
