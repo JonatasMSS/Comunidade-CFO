@@ -32,7 +32,7 @@ const routes = createBrowserRouter([
     },
     {
         path:'posts/:userId/details',
-        element:<DetailPage/>
+        element:<AuthProvider child={<DetailPage/>}/>
     },
     {
         path:'registro/redirection',
