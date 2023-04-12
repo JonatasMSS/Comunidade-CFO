@@ -1,7 +1,6 @@
 
 import { Link, Outlet } from 'react-router-dom';
-import Like from '../assets/icons/🦆 icon _heart_.svg';
-import Comment from '../assets/icons/🦆 icon _message_.svg';
+import { LikeComment } from './LikeComment';
 
 
  interface IPostItem{
@@ -44,19 +43,10 @@ export function PostItem({...props}:IPostItem) {
             </div>
 
             {/* Like Commment section */}
-            <div className="w-full my-2 flex gap-2">
-                {/* Likes */}
-                <div className="flex gap-1">
-                    <img src={Like} alt="Like" className="w-6" />
-                    <span className="font-light">{props.likes}</span>
-                </div>
-                {/* Commentarios */}
-                <div className="flex gap-1">
-                    <img src={Comment} alt="Coment" className="w-6" />
-                    <span className="font-light">{props.comments}</span>
-                </div>
-            </div>
-
+            <LikeComment
+                comments={props.comments}
+                likes={props.likes}
+            />
 
            
         </div>
