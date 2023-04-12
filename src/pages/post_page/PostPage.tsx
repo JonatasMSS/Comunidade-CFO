@@ -158,7 +158,13 @@ export function PostPage() {
                                 <span className="text-lg w-full">Equipe: {user.team}</span>
                                 <span className="text-lg w-full">Função: {user.role}</span>
 
-
+                                
+                            
+                                <button
+                                    
+                                    className="bg-green-400 px-5 py-2 rounded-lg font-bold">
+                                    Criar uma publicação
+                                </button>
                                 <button
                                     onClick={signOut}
                                     className="bg-red-500 px-5 py-2 rounded-lg font-bold">

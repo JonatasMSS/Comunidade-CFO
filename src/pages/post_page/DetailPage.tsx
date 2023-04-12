@@ -2,6 +2,7 @@ import { Header } from "../../components/Header";
 import Like from '../../assets/icons/🦆 icon _heart_.svg';
 import Comment from '../../assets/icons/🦆 icon _message_.svg';
 import { useLocation } from "react-router-dom";
+import { LikeComment } from "../../components/LikeComment";
 
 
 
@@ -33,19 +34,11 @@ export function DetailPage() {
 
                     {/* divider */}
                     <div className="w-full h-0.5 bg-black rounded-lg mt-5"/>
-                    {/* Like and comments */}
-                    <div className="w-full my-2 flex gap-2">
-                        {/* Likes */}
-                        <div className="flex gap-1">
-                            <img src={Like} alt="Like" className="w-6" />
-                            <span className="font-light">{state.likes}</span>
-                        </div>
-                        {/* Commentarios */}
-                        <div className="flex gap-1">
-                            <img src={Comment} alt="Coment" className="w-6" />
-                            <span className="font-light">{state.comments} comentários</span>
-                        </div>
-                    </div>
+                    <LikeComment
+                        comments={state.comments}
+                        likes={state.likes}
+                        postUID={state.UID}
+                    />
 
                 </div>
             </div>
