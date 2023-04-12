@@ -1,20 +1,23 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Like from '../assets/icons/🦆 icon _heart_.svg';
 import LikeSelected from '../assets/icons/🦆 icon _heart_selected.svg';
 import Comment from '../assets/icons/🦆 icon _message_.svg';
+import { UpdatePostData } from '../controllers/firebase_controller';
 
 
 
 interface ILikeComment {
     likes: string;
-    comments: string
+    comments: string;
+    postUID:string;
 }
 
-export function LikeComment({ likes = '0', comments = '0' }: ILikeComment) {
+export function LikeComment({ likes = '0', comments = '0' ,postUID}: ILikeComment) {
 
     const [selected, setSelected] = useState(false);
     const [actualLikes, setActualLikes] = useState(likes);
+
 
     const handleLikes = () => {
         if(selected){
@@ -28,6 +31,10 @@ export function LikeComment({ likes = '0', comments = '0' }: ILikeComment) {
         
     }
 
+
+    useEffect(()=> {
+        UpdatePostData(postUID,{likes:Number(actualLikes)});
+    },[actualLikes])
     return (
         <div className="w-full my-2 flex gap-2">
             {/* Likes */}

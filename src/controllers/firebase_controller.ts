@@ -42,10 +42,15 @@ export async function QueryGetPost(queryData:string,direction?:OrderByDirection)
 }
 
 
+interface IUpdatePostDate{
+    title?: string;
+    body?: string;
+    likes?: number;
+}
 
-export async function UpdatePostData(postUID:string,{...postModelProps}:PostModel){
+export async function UpdatePostData(postUID:string,{...rest}:IUpdatePostDate){
     const postRef = doc(DB_Firestore,'posts',postUID);
-    await updateDoc(postRef,{postModelProps});
+    await updateDoc(postRef,rest).then(() => console.log("mudança executada"))
 }
 
 

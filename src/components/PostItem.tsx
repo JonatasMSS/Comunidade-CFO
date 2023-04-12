@@ -45,6 +45,7 @@ export function PostItem({...props}:IPostItem) {
 
             {/* Like Commment section */}
             <LikeComment
+                postUID={props.UID}
                 comments={props.comments}
                 likes={props.likes}
             />
