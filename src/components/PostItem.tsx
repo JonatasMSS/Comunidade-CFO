@@ -4,6 +4,7 @@ import { LikeComment } from './LikeComment';
 
 
  interface IPostItem{
+    UID:string;
     title:string;
     body:string;
     username:string;
@@ -29,7 +30,7 @@ export function PostItem({...props}:IPostItem) {
                 {/* Time */}
                 <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{props.timepost}</span>
                 <div className='flex justify-end '>
-                    <Link to={`${props.username}/details`} state={{...props}}  className='font-bold text-blue-700'>Ver post completo</Link>
+                    <Link to={`${props.UID}/details`} state={{...props}}  className='font-bold text-blue-700'>Ver post completo</Link>
                 </div>
             </div>
 

@@ -41,6 +41,14 @@ export async function QueryGetPost(queryData:string,direction?:OrderByDirection)
 
 }
 
+
+
+export async function UpdatePostData(postUID:string,{...postModelProps}:PostModel){
+    const postRef = doc(DB_Firestore,'posts',postUID);
+    await updateDoc(postRef,{postModelProps});
+}
+
+
 export async function GetAllPosts() {
     try {
         const postCollection = collection(DB_Firestore, 'posts');
