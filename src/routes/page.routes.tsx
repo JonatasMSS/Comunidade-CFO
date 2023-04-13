@@ -10,6 +10,7 @@ import { RedirectionLinkPage } from '../pages/RedirectionLinkPage';
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 import { RegisterFromGooglePage } from '../pages/RegisterFromGooglePage';
 import { DetailPage } from '../pages/post_page/DetailPage';
+import { WritePostPage } from '../pages/WriteAPostPage';
 
 const routes = createBrowserRouter([
     {
@@ -31,8 +32,13 @@ const routes = createBrowserRouter([
         element:<AuthProvider child={<PostPage/>}/>,
     },
     {
+        path:'posts/write',
+        element:<AuthProvider child={<WritePostPage/>}/>,
+        caseSensitive:true
+    },
+    {
         path:'posts/:userId/details',
-        element:<AuthProvider child={<DetailPage/>}/>
+        element:<AuthProvider child={<DetailPage/>}/>,
     },
     {
         path:'registro/redirection',
