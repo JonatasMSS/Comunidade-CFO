@@ -40,7 +40,7 @@ export function PostItem({...props}:IPostItem) {
             {/* Post Body */}
             <div className="w-full flex flex-col">
                 <span className="font-bold">{props.title}</span>
-                <p className="text-sm font-light text-start break-words max-h-16 text-red-500 overflow-hidden">{props.body}</p>
+                <p className="text-sm font-light text-start break-words max-h-16  overflow-hidden">{props.body}</p>
             </div>
 
             {/* Like Commment section */}
