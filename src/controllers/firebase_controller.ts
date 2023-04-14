@@ -4,6 +4,32 @@ import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
 import UserModel from "../models/user_model";
 
+interface IFirestorePostDoc{
+    body:string,
+    likes:number,
+    postTime:Timestamp,
+    team:string,
+    title:string,
+    user:string,
+    userId:string,
+}
+
+
+export async function CreatePost(post:PostModel){
+    const postDoc = doc(DB_Firestore,'posts',post.UID);
+    const dataToFiretstore:IFirestorePostDoc = {
+        body:post.body,
+        likes:Number(post.likes),
+        postTime: Timestamp.fromDate(post.postTime),
+        team:post.team,
+        title:post.title,
+        user:post.user,
+        userId:post.userId,
+
+    }
+
+    await setDoc(postDoc,dataToFiretstore);
+}
 
 
 export async function QueryGetPost(queryData:string,direction?:OrderByDirection){
