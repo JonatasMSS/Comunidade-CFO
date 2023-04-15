@@ -1,4 +1,4 @@
-import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where, updateDoc, orderBy, OrderByDirection } from "firebase/firestore";
+import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where, updateDoc, orderBy, OrderByDirection, addDoc } from "firebase/firestore";
 import DB_Firestore from "../routes/firebase_firestore";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
@@ -16,7 +16,8 @@ interface IFirestorePostDoc{
 
 
 export async function CreatePost(post:PostModel){
-    const postDoc = doc(DB_Firestore,'posts',post.UID);
+    const postCollection = collection(DB_Firestore,'posts');
+    
     const dataToFiretstore:IFirestorePostDoc = {
         body:post.body,
         likes:Number(post.likes),
@@ -28,7 +29,7 @@ export async function CreatePost(post:PostModel){
 
     }
 
-    await setDoc(postDoc,dataToFiretstore);
+    await addDoc(postCollection,dataToFiretstore);
 }
 
 

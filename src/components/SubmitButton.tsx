@@ -1,7 +1,8 @@
+import { FormEvent } from "react";
 
 interface ISubmitButton {
     label: string;
-    handleSubmit?(): void;
+    handleSubmit?(value:FormEvent): void;
     disabled?: boolean;
 }
 
