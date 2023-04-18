@@ -20,16 +20,16 @@ export function PostItem({...props}:IPostItem) {
         <div className="w-full flex flex-col bg-DF-White rounded-lg font-K2D text-black p-2 ">
 
             {/*Post Header */}
-            <div className="flex items-baseline md:gap-2">
+            <div className="flex items-baseline justify-between md:gap-2 md:justify-start">
                 {/* User and team */}
                 <div className="flex flex-col md:flex-row md:items-baseline md:gap-2">
-                    <span className="font-bold text-sm md:text-base ">{props.username}</span>
+                    <span className="font-bold text-sm md:text-base truncate ">{props.username}</span>
                     <span className="font-medium text-sm">{props.team}</span>
                 </div>
 
                 {/* Time */}
-                <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{props.timepost}</span>
-                <div className='flex justify-end '>
+                <span className="text-sm text-zinc-700 bg-zinc-300 truncate rounded-sm px-1">{props.timepost}</span>
+                <div className='flex truncate '>
                     <Link to={`${props.UID}/details`} state={{...props}}  className='font-bold text-blue-700'>Ver post completo</Link>
                 </div>
             </div>
