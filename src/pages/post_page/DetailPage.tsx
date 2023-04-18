@@ -3,6 +3,8 @@ import Like from '../../assets/icons/🦆 icon _heart_.svg';
 import Comment from '../../assets/icons/🦆 icon _message_.svg';
 import { useLocation } from "react-router-dom";
 import { LikeComment } from "../../components/LikeComment";
+import { array } from "yup";
+import { CommentItem } from "../../components/CommentItem";
 
 
 
@@ -44,8 +46,20 @@ export function DetailPage() {
 
             </div>
             
+            <div className="flex font-K2D text-white flex-col w-full ">
+                <span className="font-semibold text-xl mx-5">Comentários</span>
+            </div>
+
             {/* Comments section */}
-            
+            <div className="w-full flex flex-col p-5">
+
+
+                <CommentItem/>
+
+
+            </div>
+
+
         </div>
     )
 }
