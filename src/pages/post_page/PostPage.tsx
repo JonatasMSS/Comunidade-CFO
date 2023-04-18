@@ -45,7 +45,7 @@ export function PostPage() {
                 relevantPost.push(
                     <PostItem
                         UID={post.UID}
-                        key={post.userId}
+                        key={post.UID}
                         body={post.body}
                         comments={commentsInPost ?? []}
                         likes={post.likes}
@@ -65,7 +65,7 @@ export function PostPage() {
 
                 recentPost.push(
                     <PostItem
-                        key={post.userId}
+                        key={post.UID}
                         UID={post.UID}
                         body={post.body}
                         comments={commentsInPost ?? []}

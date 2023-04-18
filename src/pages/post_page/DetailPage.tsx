@@ -9,8 +9,8 @@ import { LikeComment } from "../../components/LikeComment";
 export function DetailPage() {
 
     const {state} = useLocation();
-
     
+
 
     return (
         <div className=" min-h-screen overflow-auto flex flex-col bg-DF-black">
@@ -23,21 +23,21 @@ export function DetailPage() {
                     {/* Inline data */}
                     <div className="flex items-baseline gap-5">
                         <div className="flex gap-1">
-                            <span className="font-bold ">{state.username}</span>
-                            <span className=" font-light ">{state.team}</span>
+                            <span className="font-bold ">{state[0].username}</span>
+                            <span className=" font-light ">{state[0].team}</span>
                         </div>
-                        <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{state.timepost}</span>
+                        <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{state[0].timepost}</span>
                     </div>
 
-                    <span className="font-bold md:text-2xl">{state.title}</span>
-                    <p className="font-light break-words text-start md:text-lg">{state.body}</p>
+                    <span className="font-bold md:text-2xl">{state[0].title}</span>
+                    <p className="font-light break-words text-start md:text-lg">{state[0].body}</p>
 
                     {/* divider */}
                     <div className="w-full h-0.5 bg-black rounded-lg mt-5"/>
                     <LikeComment
-                        comments={state.comments}
-                        likes={state.likes}
-                        postUID={state.UID}
+                        comments={state[0].comments?.length ?? '0'}
+                        likes={state[0].likes}
+                        postUID={state[0].UID}
                     />
 
                 </div>

@@ -12,11 +12,12 @@ import CommentModel from '../models/comment_model';
     team:string;
     timepost:string;
     likes:string;
-    comments:CommentModel[];
+    comments?:Array<CommentModel>;
 }
 
 
 export function PostItem({...props}:IPostItem) {
+    const comments = props.comments;
     return (
         <div className="w-full flex flex-col bg-DF-White rounded-lg font-K2D text-black p-2 ">
 
@@ -31,7 +32,7 @@ export function PostItem({...props}:IPostItem) {
                 {/* Time */}
                 <span className="text-sm text-zinc-700 bg-zinc-300 truncate rounded-sm px-1">{props.timepost}</span>
                 <div className='flex truncate '>
-                    <Link to={`${props.UID}/details`} state={{...props}}  className='font-bold text-blue-700'>Ver post completo</Link>
+                    <Link to={`${props.UID}/details`} state={[props]}  className='font-bold text-blue-700'>Ver post completo</Link>
                 </div>
             </div>
 
@@ -47,7 +48,7 @@ export function PostItem({...props}:IPostItem) {
             {/* Like Commment section */}
             <LikeComment
                 postUID={props.UID}
-                comments={props.comments.length.toString()}
+                comments={props.comments?.length.toString() ?? '0'}
                 likes={props.likes}
             />
 
