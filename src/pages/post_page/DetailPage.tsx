@@ -5,13 +5,14 @@ import { useLocation } from "react-router-dom";
 import { LikeComment } from "../../components/LikeComment";
 import { array } from "yup";
 import { CommentItem } from "../../components/CommentItem";
+import CommentModel from "../../models/comment_model";
 
 
 
 export function DetailPage() {
 
     const {state} = useLocation();
-    
+    const comments = state[0].comments as CommentModel[];
 
 
     return (
@@ -51,12 +52,21 @@ export function DetailPage() {
             </div>
 
             {/* Comments section */}
-            <div className="w-full flex flex-col p-5">
+            <div className="w-full flex flex-col p-5 gap-5">
+                {
+                  comments.map((comment) =>{
+                    return(
+                        <CommentItem
+                            key={comment.UID}
+                            body={comment.body}
+                            likes={comment.likes}
+                            timepost=""
+                            username={comment.user}
 
-
-                <CommentItem/>
-
-
+                        />
+                    )
+                  } )
+                }
             </div>
 
 
