@@ -41,7 +41,11 @@ export function DetailPage() {
                     />
 
                 </div>
+
             </div>
+            
+            {/* Comments section */}
+            
         </div>
     )
 }

@@ -1,6 +1,7 @@
 
 import { Link, Outlet } from 'react-router-dom';
 import { LikeComment } from './LikeComment';
+import CommentModel from '../models/comment_model';
 
 
  interface IPostItem{
@@ -11,7 +12,7 @@ import { LikeComment } from './LikeComment';
     team:string;
     timepost:string;
     likes:string;
-    comments:string;
+    comments:CommentModel[];
 }
 
 
@@ -46,7 +47,7 @@ export function PostItem({...props}:IPostItem) {
             {/* Like Commment section */}
             <LikeComment
                 postUID={props.UID}
-                comments={props.comments}
+                comments={props.comments.length.toString()}
                 likes={props.likes}
             />
 

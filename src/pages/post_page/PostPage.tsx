@@ -32,65 +32,65 @@ export function PostPage() {
 
     }
 
+    const GetAllPostersAndFilter = async () => {
+        let relevantPost: JSX.Element[] = [];
+        let recentPost: JSX.Element[] = [];
 
-    useEffect(() => {
-        GetAllPosts().then(async (posts) => {
+        await QueryGetPost('likes', 'desc').then((postIn) => {
+            postIn?.map(async (post) => {
+                const postTime = dayjs(post.postTime);
+                const differenceBetweenPostTimeAndToday = postTime.toNow();
+                const commentsInPost = await GetCommentsInPost(post.UID);
 
-            let relevantPost: JSX.Element[] = [];
-            let recentPost: JSX.Element[] = [];
-
-            await QueryGetPost('likes', 'desc').then((postIn) => {
-                postIn?.map(async (post) => {
-                    const postTime = dayjs(post.postTime);
-                    const differenceBetweenPostTimeAndToday = postTime.toNow();
-                    const commentsInPost = await GetCommentsInPost(post.UID);
-
-                    relevantPost.push(
-                        <PostItem
-                            UID={post.UID}
-                            key={post.userId}
-                            body={post.body}
-                            comments={commentsInPost?.length.toString() ?? '0'}
-                            likes={post.likes}
-                            team={post.team}
-                            timepost={differenceBetweenPostTimeAndToday}
-                            title={post.title}
-                            username={post.user}
-                        />
-                    )
-                })
+                relevantPost.push(
+                    <PostItem
+                        UID={post.UID}
+                        key={post.userId}
+                        body={post.body}
+                        comments={commentsInPost ?? []}
+                        likes={post.likes}
+                        team={post.team}
+                        timepost={differenceBetweenPostTimeAndToday}
+                        title={post.title}
+                        username={post.user}
+                    />
+                )
             })
-            await QueryGetPost('postTime', 'desc').then((postIn) => {
-                postIn?.map(async (post) => {
-                    const postTime = dayjs(post.postTime);
-                    const differenceBetweenPostTimeAndToday = postTime.toNow();
-                    const commentsInPost = await GetCommentsInPost(post.UID);
+        })
+        await QueryGetPost('postTime', 'desc').then((postIn) => {
+            postIn?.map(async (post) => {
+                const postTime = dayjs(post.postTime);
+                const differenceBetweenPostTimeAndToday = postTime.toNow();
+                const commentsInPost = await GetCommentsInPost(post.UID);
 
-                    recentPost.push(
-                        <PostItem
-                            key={post.userId}
-                            UID={post.UID}
-                            body={post.body}
-                            comments={commentsInPost?.length.toString() ?? '0'}
-                            likes={post.likes}
-                            team={post.team}
-                            timepost={differenceBetweenPostTimeAndToday}
-                            title={post.title}
-                            username={post.user}
-                        />
-                    )
-                })
+                recentPost.push(
+                    <PostItem
+                        key={post.userId}
+                        UID={post.UID}
+                        body={post.body}
+                        comments={commentsInPost ?? []}
+                        likes={post.likes}
+                        team={post.team}
+                        timepost={differenceBetweenPostTimeAndToday}
+                        title={post.title}
+                        username={post.user}
+                    />
+                )
             })
-
-
-
-
-
-
-
-            setPosts({ relevant: relevantPost, recent: recentPost });
         })
 
+
+
+
+
+
+
+        setPosts({ relevant: relevantPost, recent: recentPost });
+    }
+
+
+    useEffect(() => {
+        GetAllPostersAndFilter().then(() => {})
 
     }, [])
 
@@ -158,8 +158,8 @@ export function PostPage() {
                                 <span className="text-lg w-full">Equipe: {user.team}</span>
                                 <span className="text-lg w-full">Função: {user.role}</span>
 
-                                
-                            
+
+
                                 <Link
                                     to={'write'}
                                     className="bg-green-400 px-5 py-2 rounded-lg font-bold">
@@ -173,7 +173,7 @@ export function PostPage() {
                             </div>
                         }
                     </div>
-                   
+
                 </div>
 
             </>
