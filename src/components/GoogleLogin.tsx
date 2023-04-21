@@ -1,11 +1,10 @@
 
 import { GoogleAuthProvider, browserSessionPersistence, setPersistence, signInWithPopup } from 'firebase/auth';
 import Google from '../assets/GoogleSimbolo.svg';
-import FB_Auth from '../routes/firebase_auth';
+import { FB_Auth } from "../routes/firebase_app"; 
 import { useNavigate } from 'react-router-dom';
 import { SignInWithGoogle } from '../controllers/firebase_auth_controller';
-import { useMediaQuery } from 'react-responsive';
-import { GetUserData } from '../controllers/firebase_controller';
+import { RTGetUser } from '../controllers/firebase_realtime_database';
 
 
 interface IGoogleLogin {
@@ -27,7 +26,7 @@ export function GoogleLogin({ loaderState }: IGoogleLogin) {
 
 
             //Busca no firestore os campos times e função
-            const haveTeamOrRole =  await GetUserData(FB_Auth.currentUser!.email).then((user) => {
+            const haveTeamOrRole =  await RTGetUser(FB_Auth.currentUser!.uid).then((user) => {
                 return {
                     role: user?.role,
                     team:user?.team

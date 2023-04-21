@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import FB_Auth from "../routes/firebase_auth";
+import { FB_Auth } from "../routes/firebase_app";
 import * as Dialog from '@radix-ui/react-dialog';
 import { useMediaQuery } from "react-responsive";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ export function InlineUserData() {
                     <Dialog.Root>
                         <Dialog.Trigger className="cursor-pointer">
                             <div className="flex gap-2 items-center">
-                                <span>{user?.name}</span>
+                                <span>{FB_Auth.currentUser?.displayName}</span>
                                 {FB_Auth.currentUser?.photoURL ? <img src={FB_Auth.currentUser.photoURL} className="w-8 rounded-full" /> : <div className="w-8 h-8 bg-zinc-600 rounded-full"></div>}
                             </div>
                         </Dialog.Trigger>
@@ -56,7 +56,7 @@ export function InlineUserData() {
                         </Dialog.Portal>
                     </Dialog.Root> :
                     <div className="flex gap-2 items-center">
-                        <span>{user?.name}</span>
+                        <span>{FB_Auth.currentUser?.displayName}</span>
                         {FB_Auth.currentUser?.photoURL ? <img src={FB_Auth.currentUser.photoURL} className="w-8 rounded-full" /> : <div className="w-8 h-8 bg-zinc-600 rounded-full"></div>}
                     </div>
             }
