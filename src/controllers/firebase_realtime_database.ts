@@ -1,13 +1,8 @@
 
-import { error } from "console";
 import { RT_Database } from "../routes/firebase_app";
-import { Database, child, get, push, ref, set, update,query, orderByChild, equalTo, remove } from "firebase/database";
-import ms from "ms";
-import { async } from "@firebase/util";
+import { child, get, push, ref, update,query, orderByChild, equalTo, remove, set } from "firebase/database";
 import UserModel from "../models/user_model";
 import { EmailNotInDatabase } from "../errors/EmaitNotInFirestore";
-
-import { User } from "@phosphor-icons/react";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
 
 
@@ -79,8 +74,6 @@ export const RTCreateUser = async (user: UserModel) => {
         throw new EmailAlreadyExistsError('Erro: Email já existente');
     }
 
-    const newUserKey = push(child(databaseReference, 'users')).key;
-    const referenceToUser = ref(RT_Database, `users/${newUserKey}`);
 
 
     const userDataPost = {
@@ -90,12 +83,15 @@ export const RTCreateUser = async (user: UserModel) => {
         team: user.team,
     }
 
-    await update(referenceToUser, { ...userDataPost });
 
+    set(ref(RT_Database,'users/' + user.UID),{
+        ...userDataPost
+    })
 
+  
     return {
         code: 201,
-        message: 'Usuário Criado com sucesso. ID:' + newUserKey
+        message: 'Usuário Criado com sucesso. ID:' + user.UID
     }
 
 
@@ -118,15 +114,15 @@ export const RTUpdateUserData = async (userID: string, dataToChange: IUpdateUser
     }
 }
 
-// const usertest = new UserModel(
-//     {
-//         email:'s@gmail.com',
-//         name:'nome teste',
-//         UID:'',
-//         team:'team teste',
-//         role:'role teste'
-//     }
-// )
+const usertest = new UserModel(
+    {
+        email:'s@gmail.com',
+        name:'nome teste',
+        UID:'2',
+        team:'team teste',
+        role:'role teste'
+    }
+)
 
-// console.log(await RTDeleteUser('-NT_Pdw3SaTqvlJ9uru7'))
+console.log(await RTCreateUser(usertest));
 

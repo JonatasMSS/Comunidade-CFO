@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, Persistence, browserSessionPersistence, createUserWithEmailAndPassword, sendEmailVerification, setPersistence, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from "firebase/auth";
-import { FB_Auth } from "../routes/firebase_app"; from "../routes/firebase_auth";
+import { FB_Auth } from "../routes/firebase_app";
 import { CreateUserInFirestore, GetUserData } from "./firebase_controller";
 import UserModel from "../models/user_model";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
