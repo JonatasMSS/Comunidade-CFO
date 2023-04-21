@@ -31,63 +31,6 @@ export function PostPage() {
 
     }
 
-    const GetAllPostersAndFilter = async () => {
-        let relevantPost: JSX.Element[] = [];
-        let recentPost: JSX.Element[] = [];
-
-        await QueryGetPost('likes', 'desc').then((postIn) => {
-            postIn?.map(async (post) => {
-                const postTime = dayjs(post.postTime);
-                const differenceBetweenPostTimeAndToday = postTime.toNow();
-                const commentsInPost = await GetCommentsInPost(post.UID);
-
-                relevantPost.push(
-                    <PostItem
-                        UID={post.UID}
-                        key={post.UID}
-                        body={post.body}
-                        comments={commentsInPost ?? []}
-                        likes={post.likes}
-                        team={post.team}
-                        timepost={differenceBetweenPostTimeAndToday}
-                        title={post.title}
-                        username={post.user}
-                    />
-                )
-            })
-        })
-        await QueryGetPost('postTime', 'desc').then((postIn) => {
-            postIn?.map(async (post) => {
-                const postTime = dayjs(post.postTime);
-                const differenceBetweenPostTimeAndToday = postTime.toNow();
-                const commentsInPost = await GetCommentsInPost(post.UID);
-
-                recentPost.push(
-                    <PostItem
-                        key={post.UID}
-                        UID={post.UID}
-                        body={post.body}
-                        comments={commentsInPost ?? []}
-                        likes={post.likes}
-                        team={post.team}
-                        timepost={differenceBetweenPostTimeAndToday}
-                        title={post.title}
-                        username={post.user}
-                    />
-                )
-            })
-        })
-
-
-
-
-
-
-
-        setPosts({ relevant: relevantPost, recent: recentPost });
-    }
-
-
     useEffect(() => {
         // GetAllPostersAndFilter().then(() => {})
 
@@ -97,7 +40,7 @@ export function PostPage() {
 
 
 
-    if (user) {
+    if (FB_Auth.currentUser) {
 
 
         return (
@@ -150,12 +93,12 @@ export function PostPage() {
                             !isSmallScreen && <div className="w-5/12 h-fit p-5 gap-3   bg-white rounded-lg flex flex-col justify-center items-center font-K2D text-black">
                                 {/*Image section  */}
                                 {FB_Auth.currentUser?.photoURL ? <img src={FB_Auth.currentUser.photoURL} className="rounded-full w-40" /> : <div className="w-44 h-44 sm:w-32 sm:h-32 bg-gray-500 rounded-full" />}
-                                <span className="font-semibold lg:text-xl  w-full text-center">{user.name}</span>
+                                <span className="font-semibold lg:text-xl  w-full text-center">{}</span>
 
                                 {/* Data section */}
 
-                                <span className="text-lg w-full">Equipe: {user.team}</span>
-                                <span className="text-lg w-full">Função: {user.role}</span>
+                                <span className="text-lg w-full">Equipe: {}</span>
+                                <span className="text-lg w-full">Função: {}</span>
 
 
 
