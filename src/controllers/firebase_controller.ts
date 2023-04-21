@@ -1,5 +1,5 @@
 import { Timestamp, collection, getDocs,doc, getDoc, setDoc, query, where, updateDoc, orderBy, OrderByDirection, addDoc } from "firebase/firestore";
-import DB_Firestore from "../routes/firebase_firestore";
+import { DB_Firestore } from "../routes/firebase_app";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
 import UserModel from "../models/user_model";

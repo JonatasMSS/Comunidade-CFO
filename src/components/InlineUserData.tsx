@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import FB_Auth from "../routes/firebase_auth";
+import { FB_Auth } from "../routes/firebase_app"; from "../routes/firebase_auth";
 import * as Dialog from '@radix-ui/react-dialog';
 import { useMediaQuery } from "react-responsive";
 import { Link, useNavigate } from "react-router-dom";

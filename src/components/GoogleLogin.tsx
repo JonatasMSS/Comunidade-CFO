@@ -1,7 +1,7 @@
 
 import { GoogleAuthProvider, browserSessionPersistence, setPersistence, signInWithPopup } from 'firebase/auth';
 import Google from '../assets/GoogleSimbolo.svg';
-import FB_Auth from '../routes/firebase_auth';
+import { FB_Auth } from "../routes/firebase_app"; 
 import { useNavigate } from 'react-router-dom';
 import { SignInWithGoogle } from '../controllers/firebase_auth_controller';
 import { useMediaQuery } from 'react-responsive';

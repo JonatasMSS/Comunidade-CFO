@@ -11,7 +11,7 @@ import { RegisterUser } from '../controllers/firebase_auth_controller';
 import { redirect, useNavigate } from 'react-router-dom';
 import { ArrowCircleLeft } from '@phosphor-icons/react';
 import { signOut } from 'firebase/auth';
-import FB_Auth from '../routes/firebase_auth';
+import { FB_Auth } from "../routes/firebase_app"; 
 
 export function RegisterPage() {
 

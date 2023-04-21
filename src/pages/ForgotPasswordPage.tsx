@@ -11,7 +11,7 @@ import { useFormik } from 'formik';
 import { GetUserData } from '../controllers/firebase_controller';
 import { EmailAlreadyExistsError } from '../errors/EmailAlreadyExistsError';
 import { EmailNotInFirestore } from '../errors/EmaitNotInFirestore';
-import FB_Auth from '../routes/firebase_auth';
+import { FB_Auth } from "../routes/firebase_app"; 
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 
