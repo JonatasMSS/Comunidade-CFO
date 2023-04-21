@@ -1,6 +1,6 @@
 
 import { RT_Database } from "../routes/firebase_app";
-import { child, get, push, ref, update,query, orderByChild, equalTo, remove, set } from "firebase/database";
+import { child, get, push, ref, update, query, orderByChild, equalTo, remove, set } from "firebase/database";
 import UserModel from "../models/user_model";
 import { EmailNotInDatabase } from "../errors/EmaitNotInFirestore";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
@@ -11,13 +11,13 @@ import PostModel from "../models/post_model";
 const databaseReference = ref(RT_Database);
 
 
-export const RTDeleteUser = async (userID:string) => {
-    const userReference = ref(RT_Database,'users/'+userID);
+export const RTDeleteUser = async (userID: string) => {
+    const userReference = ref(RT_Database, 'users/' + userID);
     await remove(userReference);
 
     return {
         code: 200,
-        message:['Usuário deletado com sucesso. ID:' + userID,userID]
+        message: ['Usuário deletado com sucesso. ID:' + userID, userID]
     }
 
 }
@@ -66,10 +66,10 @@ export const RTGetUser = async (id: string) => {
 }
 
 export const RTCreateUser = async (user: UserModel) => {
-  
-    const verify = query(ref(RT_Database,'users'),orderByChild('email'),equalTo(user.email),);
+
+    const verify = query(ref(RT_Database, 'users'), orderByChild('email'), equalTo(user.email),);
     const verifyUser = await get(verify);
-    if(verifyUser.exists()){
+    if (verifyUser.exists()) {
         throw new EmailAlreadyExistsError('Erro: Email já existente');
     }
 
@@ -83,11 +83,11 @@ export const RTCreateUser = async (user: UserModel) => {
     }
 
 
-    set(ref(RT_Database,'users/' + user.UID),{
+    set(ref(RT_Database, 'users/' + user.UID), {
         ...userDataPost
     })
 
-  
+
     return {
         code: 201,
         message: 'Usuário Criado com sucesso. ID:' + user.UID
@@ -118,25 +118,51 @@ export const RTUpdateUserData = async (userID: string, dataToChange: IUpdateUser
 
 //POSTS CONTROLLERS
 
+
+export const RTCreatePost = async (postData: PostModel) => {
+    const newPostKey = push(child(ref(RT_Database), 'posts')).key;
+
+    const postDataToSend = {
+        body: postData.body,
+        likes: postData.likes,
+        team: postData.team,
+        title: postData.title,
+        user: postData.user,
+        userId: postData.userId,
+        postTime: postData.postTime
+
+    }
+
+    await update(ref(RT_Database,`posts/${newPostKey}`),{
+        ...postDataToSend
+    })
+
+    return {
+        code:200,
+        message: 'Post criado com sucesso.ID' + newPostKey
+    }
+
+
+}
 export const RTGetAllPost = async () => {
-    const postReference = ref(RT_Database,'posts');
+    const postReference = ref(RT_Database, 'posts');
     const posts = await get(postReference);
 
-    let postList:PostModel[] = [];
+    let postList: PostModel[] = [];
 
-    if(posts.exists()){
+    if (posts.exists()) {
         posts.forEach((post) => {
             postList.push(
                 new PostModel(
                     {
-                        UID:post.key ?? '',
-                        body:post.val()['body'],
-                        likes:post.val()['likes'],
-                        team:post.val()['team'],
-                        title:post.val()['title'],
-                        user:post.val()['user'],
-                        userId:post.val()['userId'],
-                        postTime:post.val()['postTime'],
+                        UID: post.key ?? '',
+                        body: post.val()['body'],
+                        likes: post.val()['likes'],
+                        team: post.val()['team'],
+                        title: post.val()['title'],
+                        user: post.val()['user'],
+                        userId: post.val()['userId'],
+                        postTime: post.val()['postTime'],
 
                     }
                 )
@@ -145,12 +171,13 @@ export const RTGetAllPost = async () => {
 
         return postList;
     }
-    
+
     return null;
 
 
-
 }
+
+console.log(await RTGetAllPost());
 
 // const usertest = new UserModel(
 //     {
