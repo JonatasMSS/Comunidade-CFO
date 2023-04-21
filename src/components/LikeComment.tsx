@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Like from '../assets/icons/🦆 icon _heart_.svg';
 import LikeSelected from '../assets/icons/🦆 icon _heart_selected.svg';
 import Comment from '../assets/icons/🦆 icon _message_.svg';
-import { UpdatePostData } from '../controllers/firebase_controller';
 
 
 
@@ -33,7 +32,7 @@ export function LikeComment({ likes = '0', comments = '0' ,postUID}: ILikeCommen
 
 
     useEffect(()=> {
-        UpdatePostData(postUID,{likes:Number(actualLikes)});
+        // UpdatePostData(postUID,{likes:Number(actualLikes)});
     },[actualLikes])
     return (
         <div className="w-full my-2 flex gap-2">

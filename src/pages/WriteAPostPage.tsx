@@ -9,7 +9,6 @@ import { AuthContext } from "../context/AuthContext";
 import PostModel from "../models/post_model";
 import { Timestamp } from "firebase/firestore";
 import { Loader } from "../components/Loader";
-import { CreatePost } from "../controllers/firebase_controller";
 
 
 
@@ -42,7 +41,7 @@ export function WritePostPage() {
                 postTime: new Date(Date.now())
             });
             
-            await CreatePost(dataToSend);
+            // await CreatePost(dataToSend);
 
         } catch (error) {
             alert(`Ocorreu um erro ao tentar publicar: ${error}`);

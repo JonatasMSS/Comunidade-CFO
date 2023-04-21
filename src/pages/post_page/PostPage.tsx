@@ -7,7 +7,6 @@ import { Loader } from "../../components/Loader";
 import { FB_Auth } from "../../routes/firebase_app"; 
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import PostModel from "../../models/post_model";
-import { GetAllPosts, GetCommentsInPost, QueryGetPost } from "../../controllers/firebase_controller";
 import { PostItem } from "../../components/PostItem";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';

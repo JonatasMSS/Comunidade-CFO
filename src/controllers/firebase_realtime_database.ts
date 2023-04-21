@@ -4,6 +4,7 @@ import { child, get, push, ref, update,query, orderByChild, equalTo, remove, set
 import UserModel from "../models/user_model";
 import { EmailNotInDatabase } from "../errors/EmaitNotInFirestore";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
+import PostModel from "../models/post_model";
 
 
 //Referencia do banco de dados
@@ -110,6 +111,45 @@ export const RTUpdateUserData = async (userID: string, dataToChange: IUpdateUser
         code: 200,
         message: 'Seguinte dados atualizados com sucesso:' + dataToChange
     }
+}
+
+
+
+
+//POSTS CONTROLLERS
+
+export const RTGetAllPost = async () => {
+    const postReference = ref(RT_Database,'posts');
+    const posts = await get(postReference);
+
+    let postList:PostModel[] = [];
+
+    if(posts.exists()){
+        posts.forEach((post) => {
+            postList.push(
+                new PostModel(
+                    {
+                        UID:post.key ?? '',
+                        body:post.val()['body'],
+                        likes:post.val()['likes'],
+                        team:post.val()['team'],
+                        title:post.val()['title'],
+                        user:post.val()['user'],
+                        userId:post.val()['userId'],
+                        postTime:post.val()['postTime'],
+
+                    }
+                )
+            )
+        })
+
+        return postList;
+    }
+    
+    return null;
+
+
+
 }
 
 // const usertest = new UserModel(
