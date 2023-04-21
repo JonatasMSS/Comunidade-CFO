@@ -1,8 +1,9 @@
 import { User, onAuthStateChanged, signOut } from "firebase/auth";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import FB_Auth from "../routes/firebase_auth";
 import UserModel from "../models/user_model";
 import { GetUserData } from "../controllers/firebase_controller";
+import { TestRequisition } from "../lib/testRequistions";
 
 
 
@@ -15,33 +16,37 @@ interface IAuthProvider {
 }
 export function AuthProvider({ child }: IAuthProvider) {
 
-    const [user, setUser] = useState<UserModel | null>(null)
+    const [userC, setUser] = useState<UserModel | null>(null)
+    const [quant, setQuant] = useState(0);
 
-    onAuthStateChanged(FB_Auth, (user) => {
-        
-        if (user) {
-            GetUserData(user!.email).then((userExtraData) => {
-                //Coleto os User's no firestore
-                const userData = userExtraData;
+    useEffect(() => {
+        // onAuthStateChanged(FB_Auth, (user) => {
+        //     TestRequisition('OnAuthStateChanged');
+        //     if (user && !userC) {
+        //         GetUserData(user!.email).then((userExtraData) => {
+        //             TestRequisition('GetUserData on AuthStateChanged');
+        //             //Coleto os User's no firestore
+        //             const userData = userExtraData;
 
-                //Defino o usuário com o model
-                setUser(userData);
-            }).catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+        //             //Defino o usuário com o model
+        //             setUser(userData);
+        //         }).catch((error) => {
+        //             const errorCode = error.code;
+        //             const errorMessage = error.message;
 
-                console.log(`Algo deu errado ao mudar OAuth. Erro Code:${errorCode}. Message:${errorMessage}`)
-            })
-        }
-        else {
-            setUser(null)
-        }
+        //             console.log(`Algo deu errado ao mudar OAuth. Erro Code:${errorCode}. Message:${errorMessage}`)
+        //         })
+        //     }
+        //     else {
+        //         setUser(null)
+        //     }
 
 
-    })
+        // })
+    }, [FB_Auth])
 
     return (
-        <AuthContext.Provider value={user}>
+        <AuthContext.Provider value={userC}>
             {child}
         </AuthContext.Provider>
     )

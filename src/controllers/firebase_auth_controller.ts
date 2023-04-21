@@ -72,6 +72,7 @@ interface IUserRegister {
 }
 
 export async function RegisterUser(userData: IUserRegister) {
+    
     const auth = FB_Auth;
     const verifyEmailInFirestore = await GetUserData(userData.email);
 

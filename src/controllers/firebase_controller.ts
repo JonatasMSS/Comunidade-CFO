@@ -3,6 +3,7 @@ import DB_Firestore from "../routes/firebase_firestore";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
 import UserModel from "../models/user_model";
+import { TestRequisition } from "../lib/testRequistions";
 
 interface IFirestorePostDoc{
     body:string,
@@ -16,6 +17,9 @@ interface IFirestorePostDoc{
 
 
 export async function CreatePost(post:PostModel){
+    TestRequisition('CreatePost called');
+
+
     const postCollection = collection(DB_Firestore,'posts');
     
     const dataToFiretstore:IFirestorePostDoc = {
@@ -34,6 +38,7 @@ export async function CreatePost(post:PostModel){
 
 
 export async function QueryGetPost(queryData:string,direction?:OrderByDirection){
+    TestRequisition("QueryGetPost callde")
 
     let queriedPosts:PostModel[] = [];
 
@@ -76,12 +81,14 @@ interface IUpdatePostDate{
 }
 
 export async function UpdatePostData(postUID:string,{...rest}:IUpdatePostDate){
+    TestRequisition('UpdatePostData called');
     const postRef = doc(DB_Firestore,'posts',postUID);
-    await updateDoc(postRef,rest).then(() => console.log("mudança executada"))
+    await updateDoc(postRef,rest);
 }
 
 
 export async function GetAllPosts() {
+    TestRequisition('GetAllPost Called');
     try {
         const postCollection = collection(DB_Firestore, 'posts');
         const postSnapshot = await getDocs(postCollection);
@@ -143,6 +150,8 @@ export async function GetAllComments() {
 }
 
 export async function GetCommentsInPost(postUID:string) {
+    TestRequisition('GetCommentsInPost Called');
+
     const commentsReference =   collection(DB_Firestore,'comments');
     const commentsQuery = query(commentsReference,where("postReference","==",postUID));
     const commentsSnapshot = await getDocs(commentsQuery);
@@ -169,6 +178,7 @@ export async function GetCommentsInPost(postUID:string) {
 }
 
 export async function GetUserData(email:string | null) {
+    TestRequisition('GetUserDataCalled');
     const userReference = doc(DB_Firestore,'users',email ?? '');
     const userSnap = await getDoc(userReference)
     
@@ -185,6 +195,7 @@ export async function GetUserData(email:string | null) {
     return null;   
 }
 export async function CreateUserInFirestore(userData:UserModel) {
+    TestRequisition('CreateUserInFirestore Called');
     //Cria dados extras dos usuários usando email com identificador unico
     const usersReference = doc(DB_Firestore,'users',userData.email);
     await setDoc(usersReference,userData.toFirestore())
@@ -197,6 +208,7 @@ interface IDataUserEditable{
 export async function UpdateUserInFirestore(userData:IDataUserEditable, userEmail:string){
 
     //Só é permitido alterar o time (team), a função(role) e o nickname.
+    TestRequisition('UpdateUserInFirestore Called');
 
     const usersReference = doc(DB_Firestore,'users',userEmail);
     await updateDoc(usersReference,{
@@ -205,3 +217,5 @@ export async function UpdateUserInFirestore(userData:IDataUserEditable, userEmai
         name: userData.name ??'no name'
     });
 }
+
+await GetUserData('jonatas.miguelss@gmail.com');

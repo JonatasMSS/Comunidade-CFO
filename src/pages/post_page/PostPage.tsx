@@ -90,7 +90,7 @@ export function PostPage() {
 
 
     useEffect(() => {
-        GetAllPostersAndFilter().then(() => {})
+        // GetAllPostersAndFilter().then(() => {})
 
     }, [])
 
