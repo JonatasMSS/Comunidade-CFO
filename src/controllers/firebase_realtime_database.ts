@@ -1,10 +1,11 @@
 
 import { RT_Database } from "../routes/firebase_app";
-import { child, get, push, ref, update, query, orderByChild, equalTo, remove, set } from "firebase/database";
+import { child, get, push, ref, update, query, orderByChild, equalTo, remove, set ,QueryConstraint} from "firebase/database";
 import UserModel from "../models/user_model";
 import { EmailNotInDatabase } from "../errors/EmaitNotInFirestore";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
 import PostModel from "../models/post_model";
+
 
 
 //Referencia do banco de dados
@@ -175,6 +176,36 @@ export const RTGetAllPost = async () => {
     return null;
 
 
+}
+export const RTQueryGetPost = async (filter:QueryConstraint[]) => {
+    const queriedReferencePost = query(ref(RT_Database,'posts'),...filter);
+    const posts = await get(queriedReferencePost);
+    let postList: PostModel[] = [];
+
+    if (posts.exists()) {
+        posts.forEach((post) => {
+            postList.push(
+                new PostModel(
+                    {
+                        UID: post.key ?? '',
+                        body: post.val()['body'],
+                        likes: post.val()['likes'],
+                        team: post.val()['team'],
+                        title: post.val()['title'],
+                        user: post.val()['user'],
+                        userId: post.val()['userId'],
+                        postTime: post.val()['postTime'],
+
+                    }
+                )
+            )
+        })
+
+        return postList;
+    }
+
+    return null;
+    
 }
 
 console.log(await RTGetAllPost());
