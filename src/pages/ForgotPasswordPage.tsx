@@ -8,10 +8,9 @@ import { ArrowCircleLeft } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { GetUserData } from '../controllers/firebase_controller';
 import { EmailAlreadyExistsError } from '../errors/EmailAlreadyExistsError';
-import { EmailNotInFirestore } from '../errors/EmaitNotInFirestore';
-import FB_Auth from '../routes/firebase_auth';
+import { EmailNotInDatabase } from '../errors/EmaitNotInFirestore';
+import { FB_Auth } from "../routes/firebase_app"; 
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 
@@ -34,23 +33,23 @@ export function ForgotPasswordPage() {
             email:''
         },
         onSubmit:async (formData) => {
-            try {
-                setLoading(true);
-                const verifyEmailInFirestore = await GetUserData(formData.email);
-                if(!verifyEmailInFirestore){
-                    throw new EmailNotInFirestore('Email não cadastrado para redefinição!');
-                }
-                await sendPasswordResetEmail(FB_Auth,formData.email)
-                alert('Link de redefinição enviado com sucesso a sua caixa de entrada!');
-            } catch (error) {
-               if(error instanceof EmailNotInFirestore){
-                 alert(error);
-               }else{
-                alert(`Ocorreu um erro na redefinição:${error}`);
-               }
-            }finally{
-                setLoading(false);
-            }
+            // try {
+            //     setLoading(true);
+            //     const verifyEmailInFirestore = await GetUserData(formData.email);
+            //     if(!verifyEmailInFirestore){
+            //         throw new EmailNotInDatabase('Email não cadastrado para redefinição!');
+            //     }
+            //     await sendPasswordResetEmail(FB_Auth,formData.email)
+            //     alert('Link de redefinição enviado com sucesso a sua caixa de entrada!');
+            // } catch (error) {
+            //    if(error instanceof EmailNotInDatabase){
+            //      alert(error);
+            //    }else{
+            //     alert(`Ocorreu um erro na redefinição:${error}`);
+            //    }
+            // }finally{
+            //     setLoading(false);
+            // }
 
         }
     })
