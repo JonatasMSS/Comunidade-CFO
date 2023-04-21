@@ -7,8 +7,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
 import { UpdateUserInFirestore } from "../controllers/firebase_controller";
-import { FB_Auth } from "../routes/firebase_app"; from "../routes/firebase_auth";
+import { FB_Auth } from "../routes/firebase_app";
 import MainFoto from '../assets/Principal.jpg';
+import { RTUpdateUserData } from "../controllers/firebase_realtime_database";
 
 
 export function RegisterFromGooglePage(){
@@ -35,7 +36,7 @@ export function RegisterFromGooglePage(){
         onSubmit: async (formData) => {
             try {
                 setLoading(true);
-                await UpdateUserInFirestore(formData,FB_Auth.currentUser?.email ?? '')
+                await RTUpdateUserData(FB_Auth.currentUser!.uid,{...formData})
                 navigate('/posts');
                 
             } catch (error) {

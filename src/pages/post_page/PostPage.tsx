@@ -4,7 +4,7 @@ import * as Tabs from '@radix-ui/react-tabs';
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Loader } from "../../components/Loader";
-import { FB_Auth } from "../routes/firebase_app"; from "../../routes/firebase_auth";
+import { FB_Auth } from "../../routes/firebase_app"; 
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import PostModel from "../../models/post_model";
 import { GetAllPosts, GetCommentsInPost, QueryGetPost } from "../../controllers/firebase_controller";

@@ -61,8 +61,6 @@ export const RTGetUser = async (id: string) => {
 
         return userModelReturned;
 
-    }else{
-        throw new EmailNotInDatabase('Error: Usuário não encontrado');
     }
 }
 
@@ -114,15 +112,15 @@ export const RTUpdateUserData = async (userID: string, dataToChange: IUpdateUser
     }
 }
 
-const usertest = new UserModel(
-    {
-        email:'s@gmail.com',
-        name:'nome teste',
-        UID:'2',
-        team:'team teste',
-        role:'role teste'
-    }
-)
+// const usertest = new UserModel(
+//     {
+//         email:'s@gmail.com',
+//         name:'nome teste',
+//         UID:'2',
+//         team:'team teste',
+//         role:'role teste'
+//     }
+// )
 
-console.log(await RTCreateUser(usertest));
+// console.log(await RTCreateUser(usertest));
 

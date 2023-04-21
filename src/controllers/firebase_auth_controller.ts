@@ -4,6 +4,7 @@ import { CreateUserInFirestore, GetUserData } from "./firebase_controller";
 import UserModel from "../models/user_model";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
 import { EmailNotVerified } from "../errors/EmailNotVerified";
+import { RTCreateUser, RTGetUser } from "./firebase_realtime_database";
 
 
 
@@ -37,12 +38,12 @@ export async function SignInWithGoogle(persistence: Persistence = browserSession
     await setPersistence(auth, persistence);
     //Busca as credenciais a partir de uma pop up de login do google
     const userCredentials = await signInWithPopup(FB_Auth, google_provider);
-
     //Verificar se a o user já existe no Firestore
-    const verifyUserInFirestore = await GetUserData(userCredentials.user.email);
+    const verifyUserInRDatabase = await RTGetUser(auth.currentUser?.uid ?? '')
 
+   
 
-    if (!verifyUserInFirestore) {
+    if (!verifyUserInRDatabase) {
         const userModelFromCredentials = new UserModel({
             email: userCredentials.user.email ?? 'noemail@gmail.com',
             name: userCredentials.user.displayName ?? 'noname',
@@ -50,13 +51,9 @@ export async function SignInWithGoogle(persistence: Persistence = browserSession
             role: 'norole',
             team: 'noteam '
         })
-        await CreateUserInFirestore(userModelFromCredentials)
+        console.log('Criando usuário');
+        await RTCreateUser(userModelFromCredentials);
     }
-
-
-
-
-
 
 }
 
@@ -74,7 +71,7 @@ interface IUserRegister {
 export async function RegisterUser(userData: IUserRegister) {
     
     const auth = FB_Auth;
-    const verifyEmailInFirestore = await GetUserData(userData.email);
+    const verifyEmailInFirestore = await RTGetUser(userData.email);
 
     //Verificar se o email existe
     if (verifyEmailInFirestore) {
@@ -104,7 +101,7 @@ export async function RegisterUser(userData: IUserRegister) {
             }
 
             //Cria um usuário no firestore com dados adicionais
-            await CreateUserInFirestore(userModelfromCredentials);
+            await RTCreateUser(userModelfromCredentials);
 
 
         })

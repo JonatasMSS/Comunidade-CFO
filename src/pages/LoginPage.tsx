@@ -45,14 +45,11 @@ export function LoginPage() {
                 setLoading(false);
                 navigator('/posts');
             } catch (error) {
-                if(error instanceof FirebaseError && error.code == 'auth/wrong-password'){
-                    alert('Senha incorreta');
-                }else if(error instanceof FirebaseError && error.code == 'auth/too-many-requests'){
-                    alert('Sinto muito, mas após muitas tentativas o seu acesso foi temporariamente desativado. Resete sua senha ou aguarde um tempo para poder acessar novamente');
+                if(error instanceof FirebaseError && error.code === "auth/user-not-found"){
+                    return alert("Senha ou email incorretos");
                 }
-                else{
-                    alert(error);
-                }
+
+               alert(error);
             }finally{
                 setLoading(false);
             }
