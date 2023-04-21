@@ -7,7 +7,7 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "tsx ./src/controllers/firebase_controller.ts"
+    "test": "tsx ./src/controllers/firebase_realtime_database.ts"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.0.8",
