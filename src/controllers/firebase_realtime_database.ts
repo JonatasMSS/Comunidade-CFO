@@ -164,6 +164,22 @@ export const RTCreatePost = async (postData: PostModel) => {
 
 
 }
+
+interface IUpdatePost{
+    body?:string;
+    likes?:string;
+    title?:string;
+}
+export const RTUpdatePost = async (postID:string, dataToChange:IUpdatePost) => {
+    const postReference = ref(RT_Database,`posts/${postID}`);
+
+    await update(postReference,{...dataToChange});
+
+    return {
+        code:200,
+        message:`Post ${postID} alterado com sucesso`
+    }
+}
 export const RTGetAllPost = async () => {
     const postReference = ref(RT_Database, 'posts');
     const posts = await get(postReference);
