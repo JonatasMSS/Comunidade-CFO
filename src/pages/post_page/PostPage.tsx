@@ -60,6 +60,7 @@ export function PostPage() {
         }
        })
 
+       fetchPostsByLikeAndTime();
        
 
        
@@ -112,7 +113,7 @@ export function PostPage() {
                                                     body={post.body}
                                                     likes={post.likes}
                                                     team={post.team}
-                                                    timepost={Timestamp.fromDate(new Date(Date.now())).toString()}
+                                                    timepost={post.postTime}
                                                     title={post.title}
                                                     username={post.user}
                                                     
@@ -133,7 +134,7 @@ export function PostPage() {
                                                     body={post.body}
                                                     likes={post.likes}
                                                     team={post.team}
-                                                    timepost={Timestamp.fromDate(new Date(Date.now())).toString()}
+                                                    timepost={post.postTime}
                                                     title={post.title}
                                                     username={post.user}
                                                     

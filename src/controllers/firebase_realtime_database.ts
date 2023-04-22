@@ -203,6 +203,8 @@ export const RTQueryGetPost = async (filter: QueryConstraint[]) => {
 
     if (posts.exists()) {
         posts.forEach((post) => {
+            const {seconds,nanoseconds} = post.val()['postTime'];
+            const convertedToDate = new Timestamp(seconds,nanoseconds).toDate();
             postList.push(
                 new PostModel(
                     {
@@ -213,7 +215,7 @@ export const RTQueryGetPost = async (filter: QueryConstraint[]) => {
                         title: post.val()['title'],
                         user: post.val()['user'],
                         userId: post.val()['userId'],
-                        postTime: post.val()['postTime'],
+                        postTime:  convertedToDate,
 
                     }
                 )

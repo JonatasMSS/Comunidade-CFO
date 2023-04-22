@@ -2,6 +2,9 @@
 import { Link, Outlet } from 'react-router-dom';
 import { LikeComment } from './LikeComment';
 import CommentModel from '../models/comment_model';
+import { Timestamp } from 'firebase/firestore';
+import { useEffect } from 'react';
+import dayjs from 'dayjs';
 
 
  interface IPostItem{
@@ -10,13 +13,20 @@ import CommentModel from '../models/comment_model';
     body:string;
     username:string;
     team:string;
-    timepost:string;
+    timepost:Date;
     likes:string;
     comments?:Array<CommentModel>;
 }
 
 
 export function PostItem({...props}:IPostItem) {
+    const relativeTime = dayjs(props.timepost).fromNow();
+    
+    useEffect(()=>{
+        console.log(props.timepost);
+        console.log(relativeTime);
+    },[])
+
     const comments = props.comments;
     return (
         <div className="w-full flex flex-col bg-DF-White rounded-lg font-K2D text-black p-2 ">
@@ -30,7 +40,7 @@ export function PostItem({...props}:IPostItem) {
                 </div>
 
                 {/* Time */}
-                <span className="text-sm text-zinc-700 bg-zinc-300 truncate rounded-sm px-1">{props.timepost}</span>
+                <span className="text-sm text-zinc-700 bg-zinc-300 truncate rounded-sm px-1">{relativeTime}</span>
                 <div className='flex truncate '>
                     <Link to={`${props.UID}/details`} state={[props]}  className='font-bold text-blue-700'>Ver post completo</Link>
                 </div>
