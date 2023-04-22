@@ -9,7 +9,11 @@ import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { User, onAuthStateChanged } from "firebase/auth";
 import UserModel from "../../models/user_model";
-import { RTGetUser } from "../../controllers/firebase_realtime_database";
+import { RTGetUser, RTQueryGetPost } from "../../controllers/firebase_realtime_database";
+import { equalTo, orderByChild, set } from "firebase/database";
+import PostModel from "../../models/post_model";
+import { PostItem } from "../../components/PostItem";
+import { Timestamp } from "firebase/firestore";
 dayjs.extend(relativeTime);
 
 
@@ -23,7 +27,7 @@ export function PostPage() {
     const navigate = useNavigate();
 
 
-    const [posts, setPosts] = useState<{ relevant: JSX.Element[], recent: JSX.Element[] } | undefined>();
+    const [posts, setPosts] = useState<{ relevant: PostModel[] | null, recent: PostModel[] | null} | undefined>();
     const [isloading, setLoading] = useState(false);
     const [user, setUser] = useState<UserModel | null>();
 
@@ -33,7 +37,18 @@ export function PostPage() {
         setLoading(false);
         navigate('/')
 
+    }  
+
+    const fetchPostsByLikeAndTime = async () =>{
+    
+    
+        const [recentPosts,relevantPosts] = await Promise.all([RTQueryGetPost([orderByChild('likes')]),RTQueryGetPost([orderByChild('postTime')])])
+
+        setPosts({recent:recentPosts,relevant:relevantPosts})
+
+
     }
+
 
     useEffect(() => {
        onAuthStateChanged(FB_Auth,(userData) => {
@@ -44,7 +59,12 @@ export function PostPage() {
             })
         }
        })
-    }, [])
+
+       
+
+       
+
+    }, []) 
 
 
 
@@ -83,13 +103,43 @@ export function PostPage() {
                                 {/* Conteudo de dados em alta */}
                                 <Tabs.Content value="em_alta" className="w-full flex flex-col py-5 gap-5">
                                     {
-                                        posts?.relevant ? posts.relevant.map(relevantPost => relevantPost) : <Loader />
+                                        posts?.relevant ? 
+                                        posts.relevant.map((post) => {
+                                            return (
+                                                <PostItem
+                                                    key={post.UID}
+                                                    UID={post.UID}
+                                                    body={post.body}
+                                                    likes={post.likes}
+                                                    team={post.team}
+                                                    timepost={Timestamp.fromDate(new Date(Date.now())).toString()}
+                                                    title={post.title}
+                                                    username={post.user}
+                                                    
+                                                />
+                                            )
+                                        }) : <Loader/>
                                     }
                                 </Tabs.Content>
                                 {/* Conteudos de dados recentes */}
                                 <Tabs.Content value="recentes" className="w-full flex flex-col  gap-5">
-                                    {
-                                        posts?.recent ? posts.recent.map(recentPost => recentPost) : <Loader />
+                                {
+                                        posts?.recent ? 
+                                        posts.recent.map((post) => {
+                                            return (
+                                                <PostItem
+                                                    key={post.UID}
+                                                    UID={post.UID}
+                                                    body={post.body}
+                                                    likes={post.likes}
+                                                    team={post.team}
+                                                    timepost={Timestamp.fromDate(new Date(Date.now())).toString()}
+                                                    title={post.title}
+                                                    username={post.user}
+                                                    
+                                                />
+                                            )
+                                        }) : <Loader/>
                                     }
                                 </Tabs.Content>
 
