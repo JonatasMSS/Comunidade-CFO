@@ -98,17 +98,20 @@ export const RTCreateUser = async (user: UserModel) => {
 
 
 }
-export const RTGetUserByEmail = async (email:string) => {
-    const queriedUserData = query(ref(RT_Database,'posts'),orderByChild('email'),equalTo(email));
+export const RTGetUserByEmail = async (email: string) => {
+    const queriedUserData = query(ref(RT_Database, 'users'), orderByChild('email'), equalTo(email));
     const user = await get(queriedUserData);
 
-    return new UserModel({
-        email:user.val()['email'],
-        name:user.val()['name'],
-        UID:user.key ??'',
-        role:user.val()['role'],
-        team:user.val()['team'],
-    })
+    if (user.exists()) {
+        return new UserModel({
+            email: user.val()['email'],
+            name: user.val()['name'],
+            UID: user.key ?? '',
+            role: user.val()['role'],
+            team: user.val()['team'],
+        })
+    }
+    return null;
 
 }
 interface IUpdateUserData {
@@ -234,12 +237,12 @@ export const RTQueryGetComments = async (filter: QueryConstraint[]) => {
     if (comments.exists()) {
         comments.forEach((comment) => {
             commentsList.push(new CommentModel({
-                UID:comment.key ?? '',
-                body:comment.val()['body'],
-                commentTime:comment.val()['commentTime'],
-                likes:comment.val()['likes'],
-                postReference:comment.val()['postReferenceId'],
-                user:comment.val()['user']
+                UID: comment.key ?? '',
+                body: comment.val()['body'],
+                commentTime: comment.val()['commentTime'],
+                likes: comment.val()['likes'],
+                postReference: comment.val()['postReferenceId'],
+                user: comment.val()['user']
             }))
         })
         return commentsList;
