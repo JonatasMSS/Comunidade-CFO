@@ -39,14 +39,17 @@ export function DetailPage() {
     }
 
     useEffect(() => {
+        setIsLoading(true);
         fetchPostDataAndComments().then(() => {
             console.log('Post data e comentarios coletados com sucesso!');
+        }).finally(() => {
+            setIsLoading(false);
         })
     },[])
 
 
 
-    if(isLoading){
+    if(isLoading && !postData){
         return (
             <div className="w-screen flex flex-col justify-center items-center h-screen bg-black/90">
                 <Loader/>
@@ -74,7 +77,7 @@ export function DetailPage() {
                     
                     <div className=" p-1" data-color-mode="light">
                         <span className="font-bold md:text-2xl">{postData?.title}</span>
-                        <MDEditor.Markdown style={{backgroundColor:'#EBEBEB'}}  source={postData?.body}/>
+                        <MDEditor.Markdown disableCopy style={{backgroundColor:'#EBEBEB'}}  source={postData?.body}/>
                     </div>
 
                     {/* divider */}

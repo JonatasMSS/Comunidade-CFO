@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Like from '../assets/icons/🦆 icon _heart_.svg';
 import LikeSelected from '../assets/icons/🦆 icon _heart_selected.svg';
 import Comment from '../assets/icons/🦆 icon _message_.svg';
+import { RTUpdatePost } from '../controllers/firebase_realtime_database';
 
 
 
@@ -15,25 +16,24 @@ interface ILikeComment {
 export function LikeComment({ likes = '0', comments = '0' ,postUID}: ILikeComment) {
 
     const [selected, setSelected] = useState(false);
-    const [actualLikes, setActualLikes] = useState(likes);
+    const [actualLikes, setActualLikes] = useState(Number(likes));
 
 
-    const handleLikes = () => {
+    const handleLikes = async () => {
         if(selected){
-            setActualLikes(prevLikes => String(Number(prevLikes) - 1));
+            await RTUpdatePost(postUID,{likes: (actualLikes - 1).toString() })
+            setActualLikes(prevLikes =>prevLikes - 1);
             setSelected(false);
         }
         else{
-            setActualLikes(prevLikes => String(Number(prevLikes) + 1));
+            await RTUpdatePost(postUID,{likes: (actualLikes + 1).toString() })
+            setActualLikes(prevLikes => prevLikes + 1);
             setSelected(true);
         }
         
     }
 
 
-    useEffect(()=> {
-        // UpdatePostData(postUID,{likes:Number(actualLikes)});
-    },[actualLikes])
     return (
         <div className="w-full my-2 flex gap-2">
             {/* Likes */}
