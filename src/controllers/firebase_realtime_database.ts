@@ -6,6 +6,7 @@ import { EmailNotInDatabase } from "../errors/EmaitNotInFirestore";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
 import PostModel from "../models/post_model";
 import CommentModel from "../models/comment_model";
+import { Timestamp } from "firebase/firestore";
 
 
 
@@ -139,6 +140,7 @@ export const RTUpdateUserData = async (userID: string, dataToChange: IUpdateUser
 
 export const RTCreatePost = async (postData: PostModel) => {
     const newPostKey = push(child(ref(RT_Database), 'posts')).key;
+    const convertedTime = Timestamp.fromDate(postData.postTime);
 
     const postDataToSend = {
         body: postData.body,
@@ -147,7 +149,7 @@ export const RTCreatePost = async (postData: PostModel) => {
         title: postData.title,
         user: postData.user,
         userId: postData.userId,
-        postTime: postData.postTime
+        postTime: convertedTime,
 
     }
 
