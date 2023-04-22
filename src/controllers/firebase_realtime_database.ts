@@ -1,10 +1,11 @@
 
 import { RT_Database } from "../routes/firebase_app";
-import { child, get, push, ref, update, query, orderByChild, equalTo, remove, set ,QueryConstraint} from "firebase/database";
+import { child, get, push, ref, update, query, orderByChild, equalTo, remove, set, QueryConstraint } from "firebase/database";
 import UserModel from "../models/user_model";
 import { EmailNotInDatabase } from "../errors/EmaitNotInFirestore";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
 import PostModel from "../models/post_model";
+import CommentModel from "../models/comment_model";
 
 
 
@@ -134,12 +135,12 @@ export const RTCreatePost = async (postData: PostModel) => {
 
     }
 
-    await update(ref(RT_Database,`posts/${newPostKey}`),{
+    await update(ref(RT_Database, `posts/${newPostKey}`), {
         ...postDataToSend
     })
 
     return {
-        code:200,
+        code: 200,
         message: 'Post criado com sucesso.ID' + newPostKey
     }
 
@@ -177,8 +178,8 @@ export const RTGetAllPost = async () => {
 
 
 }
-export const RTQueryGetPost = async (filter:QueryConstraint[]) => {
-    const queriedReferencePost = query(ref(RT_Database,'posts'),...filter);
+export const RTQueryGetPost = async (filter: QueryConstraint[]) => {
+    const queriedReferencePost = query(ref(RT_Database, 'posts'), ...filter);
     const posts = await get(queriedReferencePost);
     let postList: PostModel[] = [];
 
@@ -205,10 +206,33 @@ export const RTQueryGetPost = async (filter:QueryConstraint[]) => {
     }
 
     return null;
-    
+
 }
 
-console.log(await RTGetAllPost());
+
+//Comments
+
+export const RTQueryGetComments = async (filter: QueryConstraint[]) => {
+    const queriedComments = query(ref(RT_Database, 'comments'), ...filter);
+    const comments = await get(queriedComments);
+
+    let commentsList: CommentModel[] = [];
+
+    if (comments.exists()) {
+        comments.forEach((comment) => {
+            commentsList.push(new CommentModel({
+                UID:comment.key ?? '',
+                body:comment.val()['body'],
+                commentTime:comment.val()['commentTime'],
+                likes:comment.val()['likes'],
+                postReference:comment.val()['postReferenceId'],
+                user:comment.val()['user']
+            }))
+        })
+        return commentsList;
+    }
+    return null;
+}
 
 // const usertest = new UserModel(
 //     {
