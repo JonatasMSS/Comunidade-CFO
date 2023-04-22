@@ -3,12 +3,16 @@ import { Link, Outlet } from 'react-router-dom';
 import { LikeComment } from './LikeComment';
 import CommentModel from '../models/comment_model';
 import { Timestamp } from 'firebase/firestore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import PostModel from '../models/post_model';
+import { RTQueryGetComments } from '../controllers/firebase_realtime_database';
+import { equalTo, orderByChild } from 'firebase/database';
 
 
  interface IPostItem{
     UID:string;
+    userId:string;
     title:string;
     body:string;
     username:string;
@@ -21,13 +25,20 @@ import dayjs from 'dayjs';
 
 export function PostItem({...props}:IPostItem) {
     const relativeTime = dayjs(props.timepost).fromNow();
-    
-    useEffect(()=>{
-        console.log(props.timepost);
-        console.log(relativeTime);
+    const [postComments,setPostComments] = useState<CommentModel[] | undefined>();
+
+    useEffect(() => {
+
+        RTQueryGetComments([orderByChild('postReferenceId'),equalTo(props.UID)])
+        .then((comments)=>{
+            if(comments){
+                setPostComments(comments);
+            }
+        })
+
+
     },[])
 
-    const comments = props.comments;
     return (
         <div className="w-full flex flex-col bg-DF-White rounded-lg font-K2D text-black p-2 ">
 
@@ -42,7 +53,7 @@ export function PostItem({...props}:IPostItem) {
                 {/* Time */}
                 <span className="text-sm text-zinc-700 bg-zinc-300 truncate rounded-sm px-1">{relativeTime}</span>
                 <div className='flex truncate '>
-                    <Link to={`${props.UID}/details`} state={[props]}  className='font-bold text-blue-700'>Ver post completo</Link>
+                    <Link to={`${props.UID}/details`} state={[]}  className='font-bold text-blue-700'>Ver post completo</Link>
                 </div>
             </div>
 
@@ -58,7 +69,7 @@ export function PostItem({...props}:IPostItem) {
             {/* Like Commment section */}
             <LikeComment
                 postUID={props.UID}
-                comments={props.comments?.length.toString() ?? '0'}
+                comments={postComments?.length.toString() ?? '0'}
                 likes={props.likes}
             />
 

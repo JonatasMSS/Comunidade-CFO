@@ -106,16 +106,21 @@ export function PostPage() {
                                     {
                                         posts?.relevant ? 
                                         posts.relevant.map((post) => {
+
+                                           
+
                                             return (
                                                 <PostItem
                                                     key={post.UID}
                                                     UID={post.UID}
+                                                    userId={post.userId}
                                                     body={post.body}
                                                     likes={post.likes}
                                                     team={post.team}
                                                     timepost={post.postTime}
                                                     title={post.title}
                                                     username={post.user}
+                                                    
                                                     
                                                 />
                                             )
@@ -129,6 +134,7 @@ export function PostPage() {
                                         posts.recent.map((post) => {
                                             return (
                                                 <PostItem
+                                                    userId={post.userId}
                                                     key={post.UID}
                                                     UID={post.UID}
                                                     body={post.body}

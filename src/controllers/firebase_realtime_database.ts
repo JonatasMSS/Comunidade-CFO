@@ -196,6 +196,30 @@ export const RTGetAllPost = async () => {
 
 
 }
+export const RTGetPost = async (id: string) => {
+    const postReference = ref(RT_Database, 'posts/' + id);
+    const post = await get(postReference);
+    if (post.exists()) {
+        const { seconds, nanoseconds } = post.val()['postTime'];
+        const convertedToDate = new Timestamp(seconds, nanoseconds).toDate();
+        return new PostModel(
+            {
+                UID: post.key ?? '',
+                body: post.val()['body'],
+                likes: post.val()['likes'],
+                team: post.val()['team'],
+                title: post.val()['title'],
+                user: post.val()['user'],
+                userId: post.val()['userId'],
+                postTime: convertedToDate,
+
+            }
+        )
+    }
+    return null;
+}
+
+
 export const RTQueryGetPost = async (filter: QueryConstraint[]) => {
     const queriedReferencePost = query(ref(RT_Database, 'posts'), ...filter);
     const posts = await get(queriedReferencePost);
@@ -203,8 +227,8 @@ export const RTQueryGetPost = async (filter: QueryConstraint[]) => {
 
     if (posts.exists()) {
         posts.forEach((post) => {
-            const {seconds,nanoseconds} = post.val()['postTime'];
-            const convertedToDate = new Timestamp(seconds,nanoseconds).toDate();
+            const { seconds, nanoseconds } = post.val()['postTime'];
+            const convertedToDate = new Timestamp(seconds, nanoseconds).toDate();
             postList.push(
                 new PostModel(
                     {
@@ -215,7 +239,7 @@ export const RTQueryGetPost = async (filter: QueryConstraint[]) => {
                         title: post.val()['title'],
                         user: post.val()['user'],
                         userId: post.val()['userId'],
-                        postTime:  convertedToDate,
+                        postTime: convertedToDate,
 
                     }
                 )
