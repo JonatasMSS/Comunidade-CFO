@@ -2,7 +2,6 @@ import { User, onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { FB_Auth } from "../routes/firebase_app";
 import UserModel from "../models/user_model";
-import { GetUserData } from "../controllers/firebase_controller";
 import { TestRequisition } from "../lib/testRequistions";
 
 

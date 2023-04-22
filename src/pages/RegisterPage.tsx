@@ -43,6 +43,7 @@ export function RegisterPage() {
             try {
                 setLoading(true);
                 await RegisterUser({
+                    
                     email: formData.email,
                     name: formData.nickname,
                     password: formData.password,
@@ -54,6 +55,7 @@ export function RegisterPage() {
                 navigate('/registro/redirection');
             } catch (error) {
                 alert(error);
+                console.log(error);
 
             } finally {
                 setLoading(false);

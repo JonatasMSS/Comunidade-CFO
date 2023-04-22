@@ -1,27 +1,31 @@
 import { useMediaQuery } from "react-responsive";
 import { Header } from "../../components/Header";
 import * as Tabs from '@radix-ui/react-tabs';
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useEffect, useState } from "react";
 import { Loader } from "../../components/Loader";
 import { FB_Auth } from "../../routes/firebase_app"; 
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import PostModel from "../../models/post_model";
-import { PostItem } from "../../components/PostItem";
+import { Link, useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { User, onAuthStateChanged } from "firebase/auth";
+import UserModel from "../../models/user_model";
+import { RTGetUser } from "../../controllers/firebase_realtime_database";
 dayjs.extend(relativeTime);
+
+
+
+
 
 export function PostPage() {
 
     const isSmallScreen = useMediaQuery({ query: '(max-width:640px)' })
-    const user = useContext(AuthContext);
+    // const user = useContext(AuthContext);
     const navigate = useNavigate();
 
 
     const [posts, setPosts] = useState<{ relevant: JSX.Element[], recent: JSX.Element[] } | undefined>();
     const [isloading, setLoading] = useState(false);
-
+    const [user, setUser] = useState<UserModel | null>();
 
     const signOut = async () => {
         setLoading(true);
@@ -32,15 +36,21 @@ export function PostPage() {
     }
 
     useEffect(() => {
-        // GetAllPostersAndFilter().then(() => {})
-
+       onAuthStateChanged(FB_Auth,(userData) => {
+        if(userData){
+            RTGetUser(userData.uid)
+            .then((userInfoData) => {
+                setUser(userInfoData);
+            })
+        }
+       })
     }, [])
 
 
 
 
 
-    if (FB_Auth.currentUser) {
+    if (user) {
 
 
         return (
@@ -92,13 +102,13 @@ export function PostPage() {
                         {
                             !isSmallScreen && <div className="w-5/12 h-fit p-5 gap-3   bg-white rounded-lg flex flex-col justify-center items-center font-K2D text-black">
                                 {/*Image section  */}
-                                {FB_Auth.currentUser?.photoURL ? <img src={FB_Auth.currentUser.photoURL} className="rounded-full w-40" /> : <div className="w-44 h-44 sm:w-32 sm:h-32 bg-gray-500 rounded-full" />}
+                                {FB_Auth.currentUser?.photoURL ? <img  referrerPolicy="no-referrer" src={FB_Auth.currentUser.photoURL} className="rounded-full w-40" /> : <div className="w-44 h-44 sm:w-32 sm:h-32 bg-gray-500 rounded-full" />}
                                 <span className="font-semibold lg:text-xl  w-full text-center">{}</span>
 
                                 {/* Data section */}
 
-                                <span className="text-lg w-full">Equipe: {}</span>
-                                <span className="text-lg w-full">Função: {}</span>
+                                <span className="text-lg w-full">Equipe: {user.team}</span>
+                                <span className="text-lg w-full">Função: {user.role}</span>
 
 
 
