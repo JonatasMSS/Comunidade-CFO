@@ -3,7 +3,7 @@ import { FB_Auth } from "../routes/firebase_app";
 import UserModel from "../models/user_model";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
 import { EmailNotVerified } from "../errors/EmailNotVerified";
-import { RTCreateUser, RTGetUser } from "./firebase_realtime_database";
+import { RTCreateUser, RTGetUser, RTGetUserByEmail } from "./firebase_realtime_database";
 
 
 
@@ -70,7 +70,7 @@ interface IUserRegister {
 export async function RegisterUser(userData: IUserRegister) {
     
     const auth = FB_Auth;
-    const verifyEmailInFirestore = await RTGetUser(userData.email);
+    const verifyEmailInFirestore = await RTGetUserByEmail(userData.email);
 
     //Verificar se o email existe
     if (verifyEmailInFirestore) {
@@ -93,6 +93,7 @@ export async function RegisterUser(userData: IUserRegister) {
                 team: userData.team,
 
             })
+           
 
             //Envia email de verificação
             if (auth.currentUser) {

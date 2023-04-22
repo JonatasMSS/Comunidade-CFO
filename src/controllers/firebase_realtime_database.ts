@@ -84,7 +84,7 @@ export const RTCreateUser = async (user: UserModel) => {
         team: user.team,
     }
 
-
+    console.log(user.UID);
     set(ref(RT_Database, 'users/' + user.UID), {
         ...userDataPost
     })
