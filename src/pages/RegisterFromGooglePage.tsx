@@ -6,7 +6,6 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as yup from 'yup';
-import { UpdateUserInFirestore } from "../controllers/firebase_controller";
 import { FB_Auth } from "../routes/firebase_app";
 import MainFoto from '../assets/Principal.jpg';
 import { RTUpdateUserData } from "../controllers/firebase_realtime_database";

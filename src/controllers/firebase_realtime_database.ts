@@ -98,6 +98,19 @@ export const RTCreateUser = async (user: UserModel) => {
 
 
 }
+export const RTGetUserByEmail = async (email:string) => {
+    const queriedUserData = query(ref(RT_Database,'posts'),orderByChild('email'),equalTo(email));
+    const user = await get(queriedUserData);
+
+    return new UserModel({
+        email:user.val()['email'],
+        name:user.val()['name'],
+        UID:user.key ??'',
+        role:user.val()['role'],
+        team:user.val()['team'],
+    })
+
+}
 interface IUpdateUserData {
     name?: string;
     role?: string;
