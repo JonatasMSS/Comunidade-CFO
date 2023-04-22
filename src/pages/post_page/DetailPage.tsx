@@ -71,18 +71,19 @@ export function DetailPage() {
                         <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{relativeTime}</span>
                     </div>
 
-                    <span className="font-bold md:text-2xl">{postData?.title}</span>
-                    <div className="" data-color-mode="light">
+                    
+                    <div className=" p-1" data-color-mode="light">
+                        <span className="font-bold md:text-2xl">{postData?.title}</span>
                         <MDEditor.Markdown style={{backgroundColor:'#EBEBEB'}}  source={postData?.body}/>
                     </div>
 
                     {/* divider */}
                     <div className="w-full h-0.5 bg-black rounded-lg mt-5" />
-                    {/* <LikeComment
-                        comments={state.comments?.length ?? '0'}
-                        likes={state[0].likes}
-                        postUID={state[0].UID}
-                    /> */}
+                    <LikeComment
+                        comments={comments?.length.toString() ?? '0'}
+                        likes={postData?.likes ?? '0'}
+                        postUID={postData?.UID ?? ''}
+                    />
 
                 </div>
 
@@ -94,9 +95,12 @@ export function DetailPage() {
 
             {/* Comments section */}
             <div className="w-full flex flex-col p-5 gap-5">
-                {
-                    
-                }
+               <CommentItem
+                body="Comentário teste"
+                likes="32"
+                timepost="232323"
+                username="Jonatinhas"
+               />
             </div>
 
 
