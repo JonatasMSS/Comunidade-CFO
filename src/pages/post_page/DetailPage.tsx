@@ -12,6 +12,7 @@ import { Loader } from "../../components/Loader";
 import { RTGetPost, RTQueryGetComments, RTQueryGetPost } from "../../controllers/firebase_realtime_database";
 import { equalTo, orderByChild, set } from "firebase/database";
 import dayjs from "dayjs";
+import MDEditor from "@uiw/react-md-editor";
 
 
 
@@ -71,7 +72,9 @@ export function DetailPage() {
                     </div>
 
                     <span className="font-bold md:text-2xl">{postData?.title}</span>
-                    <p className="font-light break-words text-start md:text-lg">{postData?.body}</p>
+                    <div className="" data-color-mode="light">
+                        <MDEditor.Markdown style={{backgroundColor:'#EBEBEB'}}  source={postData?.body}/>
+                    </div>
 
                     {/* divider */}
                     <div className="w-full h-0.5 bg-black rounded-lg mt-5" />
