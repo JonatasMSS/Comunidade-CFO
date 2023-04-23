@@ -293,6 +293,7 @@ export const RTQueryGetComments = async (filter: QueryConstraint[]) => {
                 likes: comment.val()['likes'],
                 postReference: comment.val()['postReferenceId'],
                 user: comment.val()['user']
+            
             }))
         })
         return commentsList;

@@ -92,18 +92,30 @@ export function DetailPage() {
 
             </div>
 
-            <div className="flex font-K2D text-white flex-col w-full ">
-                <span className="font-semibold text-xl mx-5">Comentários</span>
+            {/* Reply button */}
+            <div className="w-full flex my-3 ">
+                <button className="sm:text-xl p-1 mx-10 border-2 bg-DF-black rounded-lg text-white font-K2D">Reply</button>
+            </div>
+
+            <div className="flex font-K2D text-white flex-col w-full my-2">
+                <span className="font-semibold text-xl mx-5 ">Comentários</span>
             </div>
 
             {/* Comments section */}
             <div className="w-full flex flex-col p-5 gap-5">
-               <CommentItem
-                body="Comentário teste"
-                likes="32"
-                timepost="232323"
-                username="Jonatinhas"
-               />
+               {
+                comments && comments.map((comment) => {
+                    return (
+                        <CommentItem
+                            key={comment.UID}
+                            body={comment.body}
+                            likes={comment.likes}
+                            timepost={comment.commentTime}
+                            username={comment.user}
+                        />
+                    )
+                })
+               }
             </div>
 
 
