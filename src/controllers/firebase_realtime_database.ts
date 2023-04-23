@@ -323,6 +323,21 @@ export const RTCreateComment = async (commentData:CommentModel) => {
     }
 }
 
+interface IUpdateComments{
+    body?:string;
+    likes?:string;
+}
+export const RTUpdateComment =async (commentId:string,dataToChange:IUpdateComments) => {
+    const commentRef = ref(RT_Database,`comments/${commentId}`);
+
+    await update(commentRef,{...dataToChange});
+
+    return {
+        code:200,
+        msg: `Dados do comentario ${commentId} alterado com sucesso! `
+    }
+}
+
 // const usertest = new UserModel(
 //     {
 //         email:'s@gmail.com',
