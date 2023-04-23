@@ -52,7 +52,7 @@ export function RegisterPage() {
                 })
                 setLoading(false);
                 signOut(FB_Auth);
-                navigate('/registro/redirection');
+                navigate('/registro/redirection',{replace:true});
             } catch (error) {
                 alert(error);
                 console.log(error);
