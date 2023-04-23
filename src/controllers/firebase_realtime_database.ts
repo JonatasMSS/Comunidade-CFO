@@ -300,7 +300,28 @@ export const RTQueryGetComments = async (filter: QueryConstraint[]) => {
     }
     return null;
 }
+export const RTCreateComment = async (postUID:string,commentData:CommentModel) => {
+    const newCommentkey = push(child(ref(RT_Database),'comments')).key;
+    const convertedTime = Timestamp.fromDate(commentData.commentTime);
+    
+    const dataToSend = {
+        UID:commentData.UID,
+        body:commentData.body,
+        likes:'0',
+        postReference:postUID,
+        user:commentData.user,
+        commentTime:convertedTime
+    }
 
+    await update(ref(RT_Database,`comments/${newCommentkey}`),{
+        ...dataToSend
+    })
+
+    return{
+        code:200,
+        msg: 'Dados enviados com sucesso!'
+    }
+}
 
 // const usertest = new UserModel(
 //     {
