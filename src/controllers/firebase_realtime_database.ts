@@ -1,6 +1,6 @@
 
 import { RT_Database } from "../routes/firebase_app";
-import { child, get, push, ref, update, query, orderByChild, equalTo, remove, set, QueryConstraint } from "firebase/database";
+import { child, get, push, ref, update, query, orderByChild, equalTo, remove, set, QueryConstraint, limitToFirst } from "firebase/database";
 import UserModel from "../models/user_model";
 import { EmailNotInDatabase } from "../errors/EmaitNotInFirestore";
 import { EmailAlreadyExistsError } from "../errors/EmailAlreadyExistsError";
@@ -300,15 +300,15 @@ export const RTQueryGetComments = async (filter: QueryConstraint[]) => {
     }
     return null;
 }
-export const RTCreateComment = async (postUID:string,commentData:CommentModel) => {
+export const RTCreateComment = async (commentData:CommentModel) => {
     const newCommentkey = push(child(ref(RT_Database),'comments')).key;
     const convertedTime = Timestamp.fromDate(commentData.commentTime);
     
     const dataToSend = {
-        UID:commentData.UID,
+        UID:newCommentkey,
         body:commentData.body,
-        likes:'0',
-        postReference:postUID,
+        likes:commentData.likes,
+        postReferenceId:commentData.postReference,
         user:commentData.user,
         commentTime:convertedTime
     }
@@ -335,3 +335,5 @@ export const RTCreateComment = async (postUID:string,commentData:CommentModel) =
 
 // console.log(await RTCreateUser(usertest));
 
+
+console.log(await RTQueryGetComments([orderByChild('postReferenceId'),equalTo('-NTe-B4sTe7tcWI2vnby'),limitToFirst(5)]))

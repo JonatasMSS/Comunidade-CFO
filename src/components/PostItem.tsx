@@ -30,7 +30,7 @@ export function PostItem({...props}:IPostItem) {
     useEffect(() => {
 
         RTQueryGetComments([orderByChild('postReferenceId'),equalTo(props.UID)])
-        .then((comments)=>{
+        .then((comments)=>{ 
             if(comments){
                 setPostComments(comments);
             }

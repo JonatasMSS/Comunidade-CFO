@@ -1,16 +1,23 @@
 import MDEditor from "@uiw/react-md-editor";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Loader } from "./Loader";
+import { RTCreateComment } from "../controllers/firebase_realtime_database";
+import { AuthContext } from "../context/AuthContext";
+import CommentModel from "../models/comment_model";
 
 
 
-interface ICommentCreator{
-    commentState: React.Dispatch<React.SetStateAction<boolean>>; // Muda o estado -> Se esta comentando ou não
+interface ICommentCreator {
+    commentState: React.Dispatch<React.SetStateAction<boolean>>;
+    postId: string; // Muda o estado -> Se esta comentando ou não
 }
 
 
-export function CommentCreator({commentState}:ICommentCreator) {
+export function CommentCreator({ commentState ,postId}: ICommentCreator) {
     const [commentValue, setCommentValue] = useState<string | undefined>();
+    const [isLoading, setIsLoading] = useState(false);
 
+    const user = useContext(AuthContext);
 
     const handleCancelComment = () => {
         commentState(false);
@@ -18,14 +25,35 @@ export function CommentCreator({commentState}:ICommentCreator) {
 
     const handleSubmitComment = async () => {
         try {
+            setIsLoading(true);
+            const commentToSend:CommentModel = {
+                UID:'',
+                body:commentValue ?? '',
+                commentTime: new Date(Date.now()),
+                likes:'0',
+                postReference:postId,
+                user:user?.name ?? ''
+
+            }
+            await RTCreateComment(commentToSend);
             
+            window.location.reload();
+
         } catch (error) {
-            
+            console.error(error);
+        }finally{
+            setIsLoading(false);
+            commentState(false);
         }
     }
 
     return (
-
+        <>
+        {
+            isLoading && <div className="inset-0 z-10 bg-DF-black/50 fixed">
+                <Loader/>
+            </div>
+        }
         <div className="w-full  gap-4 flex flex-col justify-center items-center font-K2D " >
             <MDEditor value={commentValue} onChange={setCommentValue} className="w-4/5" />
             <div className="w-4/5 flex px-1 justify-end gap-5">
@@ -35,5 +63,6 @@ export function CommentCreator({commentState}:ICommentCreator) {
             </div>
         </div>
 
+        </>
     )
 }

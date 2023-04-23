@@ -24,7 +24,7 @@ export function DetailPage() {
     const [postData, setPostData] = useState<PostModel | null>();
     const [comments, setComments] = useState<CommentModel[] | null>();
     const [isLoading,setIsLoading] = useState(false);
-    const [isCommenting, setIsCommenting] = useState(true);
+    const [isCommenting, setIsCommenting] = useState(false);
     const relativeTime = dayjs(postData?.postTime).fromNow();
 
 
@@ -44,10 +44,14 @@ export function DetailPage() {
         setIsLoading(true);
         fetchPostDataAndComments().then(() => {
             console.log('Post data e comentarios coletados com sucesso!');
+            console.log(comments);
         }).finally(() => {
             setIsLoading(false);
         })
+
+        
     },[])
+
 
 
 
@@ -99,6 +103,7 @@ export function DetailPage() {
                 {
                     isCommenting ? 
                     <CommentCreator
+                        postId={postId ?? ''}
                         commentState={setIsCommenting}
                     />: 
                     <button onClick={() => setIsCommenting(true)} className="hover:bg-zinc-600 hover:scale-105 transition-all sm:text-xl p-1 mx-10 border-2 bg-DF-black rounded-lg text-white font-K2D">Reply</button>
