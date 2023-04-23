@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import PostModel from "../../models/post_model";
 import { Loader } from "../../components/Loader";
 import { RTGetPost, RTQueryGetComments, RTQueryGetPost } from "../../controllers/firebase_realtime_database";
-import { equalTo, orderByChild, set } from "firebase/database";
+import { equalTo, orderByChild, orderByValue, set } from "firebase/database";
 import dayjs from "dayjs";
 import MDEditor from "@uiw/react-md-editor";
 import { CommentCreator } from "../../components/CommentCreator";
@@ -35,8 +35,10 @@ export function DetailPage() {
             RTQueryGetComments([orderByChild('postReferenceId'),equalTo(postId!)])
         ]);
 
+        const commentsOrderByLikes = comments?.sort((a,b) => Number(b.likes) - Number(a.likes));
+
         setPostData(post);
-        setComments(comments);
+        setComments(commentsOrderByLikes);
 
     }
 
