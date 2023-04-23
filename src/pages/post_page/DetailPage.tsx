@@ -120,6 +120,7 @@ export function DetailPage() {
                 comments && comments.map((comment) => {
                     return (
                         <CommentItem
+                            UID={comment.UID}
                             key={comment.UID}
                             body={comment.body}
                             likes={comment.likes}
