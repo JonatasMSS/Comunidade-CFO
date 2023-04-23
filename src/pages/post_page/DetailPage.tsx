@@ -13,18 +13,20 @@ import { RTGetPost, RTQueryGetComments, RTQueryGetPost } from "../../controllers
 import { equalTo, orderByChild, set } from "firebase/database";
 import dayjs from "dayjs";
 import MDEditor from "@uiw/react-md-editor";
+import { CommentCreator } from "../../components/CommentCreator";
 
 
 
 export function DetailPage() {
 
     const {postId} = useParams();
-    //TODO: MUDAR ISSO PARA FAZER REQUISIÇÕES
 
     const [postData, setPostData] = useState<PostModel | null>();
     const [comments, setComments] = useState<CommentModel[] | null>();
-    const relativeTime = dayjs(postData?.postTime).fromNow();
     const [isLoading,setIsLoading] = useState(false);
+    const [isCommenting, setIsCommenting] = useState(true);
+    const relativeTime = dayjs(postData?.postTime).fromNow();
+
 
 
     const fetchPostDataAndComments = async () => {
@@ -94,7 +96,13 @@ export function DetailPage() {
 
             {/* Reply button */}
             <div className="w-full flex my-3 ">
-                <button className="sm:text-xl p-1 mx-10 border-2 bg-DF-black rounded-lg text-white font-K2D">Reply</button>
+                {
+                    isCommenting ? 
+                    <CommentCreator
+                        commentState={setIsCommenting}
+                    />: 
+                    <button onClick={() => setIsCommenting(true)} className="hover:bg-zinc-600 hover:scale-105 transition-all sm:text-xl p-1 mx-10 border-2 bg-DF-black rounded-lg text-white font-K2D">Reply</button>
+                }
             </div>
 
             <div className="flex font-K2D text-white flex-col w-full my-2">
