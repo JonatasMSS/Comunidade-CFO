@@ -4,9 +4,11 @@ import Like from '../assets/icons/🦆 icon _heart_.svg';
 import LikeSelected from '../assets/icons/🦆 icon _heart_selected.svg';
 import MDEditor from '@uiw/react-md-editor';
 import { useState } from 'react';
+import { RTUpdateComment } from '../controllers/firebase_realtime_database';
 
 
 interface ICommentItem {
+    UID:string;
     username: string;
     body: string;
     timepost: Date;
@@ -21,12 +23,14 @@ export function CommentItem({ ...props }: ICommentItem) {
     const [isSelected, setSelected] = useState(false);
     const [actualLikes, setActualLikes] = useState(Number(props.likes))
 
-    const handleLikes = () => {
+    const handleLikes = async () => {
         if (isSelected) {
+            await RTUpdateComment(props.UID,{likes:(actualLikes - 1).toString()})
             setActualLikes(prevState => prevState - 1);
             setSelected(false);
         }
         else {
+            await RTUpdateComment(props.UID,{likes:(actualLikes + 1).toString()})
             setActualLikes(prevState => prevState + 1);
             setSelected(true);
         }
