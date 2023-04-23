@@ -9,6 +9,7 @@ import { AuthContext } from "../context/AuthContext";
 import PostModel from "../models/post_model";
 import { Timestamp } from "firebase/firestore";
 import { Loader } from "../components/Loader";
+import { RTCreatePost } from "../controllers/firebase_realtime_database";
 
 
 
@@ -31,7 +32,7 @@ export function WritePostPage() {
         try {
             setLoading(true);
             const dataToSend = new PostModel({
-                UID: '',
+                UID:'', // UID opcional
                 body: postData,
                 likes: '0',
                 title: title,
@@ -41,7 +42,9 @@ export function WritePostPage() {
                 postTime: new Date(Date.now())
             });
             
-            // await CreatePost(dataToSend);
+            await RTCreatePost(dataToSend);
+
+            alert('Publicação criada com suceso!');
 
         } catch (error) {
             alert(`Ocorreu um erro ao tentar publicar: ${error}`);

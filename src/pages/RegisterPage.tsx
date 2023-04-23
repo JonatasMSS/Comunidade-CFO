@@ -43,6 +43,7 @@ export function RegisterPage() {
             try {
                 setLoading(true);
                 await RegisterUser({
+                    
                     email: formData.email,
                     name: formData.nickname,
                     password: formData.password,
@@ -51,9 +52,10 @@ export function RegisterPage() {
                 })
                 setLoading(false);
                 signOut(FB_Auth);
-                navigate('/registro/redirection');
+                navigate('/registro/redirection',{replace:true});
             } catch (error) {
                 alert(error);
+                console.log(error);
 
             } finally {
                 setLoading(false);

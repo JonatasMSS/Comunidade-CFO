@@ -12,18 +12,19 @@ import { EmailAlreadyExistsError } from '../errors/EmailAlreadyExistsError';
 import { EmailNotInDatabase } from '../errors/EmaitNotInFirestore';
 import { FB_Auth } from "../routes/firebase_app"; 
 import { sendPasswordResetEmail } from 'firebase/auth';
+import { RTGetUser, RTGetUserByEmail } from '../controllers/firebase_realtime_database';
 
 
 
 
-export function ForgotPasswordPage() {
+export function ForgotPasswordPage() {  
 
     const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const schemaValidation = yup.object().shape(
         {
-            email:yup.string().required('Campo obrigatório!')
+            email:yup.string().email('Digite um email válido').required('Campo obrigatório')
         }
     )
     
@@ -33,23 +34,24 @@ export function ForgotPasswordPage() {
             email:''
         },
         onSubmit:async (formData) => {
-            // try {
-            //     setLoading(true);
-            //     const verifyEmailInFirestore = await GetUserData(formData.email);
-            //     if(!verifyEmailInFirestore){
-            //         throw new EmailNotInDatabase('Email não cadastrado para redefinição!');
-            //     }
-            //     await sendPasswordResetEmail(FB_Auth,formData.email)
-            //     alert('Link de redefinição enviado com sucesso a sua caixa de entrada!');
-            // } catch (error) {
-            //    if(error instanceof EmailNotInDatabase){
-            //      alert(error);
-            //    }else{
-            //     alert(`Ocorreu um erro na redefinição:${error}`);
-            //    }
-            // }finally{
-            //     setLoading(false);
-            // }
+            try {
+                setLoading(true);
+               
+                const verifyEmailInFirestore = await RTGetUserByEmail(formData.email);
+                if(!verifyEmailInFirestore){
+                    throw new EmailNotInDatabase('Email não cadastrado para redefinição!');
+                }
+                await sendPasswordResetEmail(FB_Auth,formData.email)
+                alert('Link de redefinição enviado com sucesso a sua caixa de entrada!');
+            } catch (error) {
+               if(error instanceof EmailNotInDatabase){
+                 alert(error);
+               }else{
+                alert(`Ocorreu um erro na redefinição:${error}`);
+               }
+            }finally{
+                setLoading(false);
+            }
 
         }
     })

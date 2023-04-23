@@ -2,13 +2,13 @@ import { User, onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { FB_Auth } from "../routes/firebase_app";
 import UserModel from "../models/user_model";
-import { GetUserData } from "../controllers/firebase_controller";
 import { TestRequisition } from "../lib/testRequistions";
+import { RTGetUser } from "../controllers/firebase_realtime_database";
 
 
 
 
-export const AuthContext = createContext<UserModel | null>(null)
+export const AuthContext = createContext<UserModel | null | undefined>(null)
 
 
 interface IAuthProvider {
@@ -16,31 +16,19 @@ interface IAuthProvider {
 }
 export function AuthProvider({ child }: IAuthProvider) {
 
-    const [userC, setUser] = useState<UserModel | null>(null)
-    const [quant, setQuant] = useState(0);
+    const [userC, setUser] = useState<UserModel>()
 
     useEffect(() => {
-        // onAuthStateChanged(FB_Auth, (user) => {
-        //     TestRequisition('OnAuthStateChanged');
-        //     if (user && !userC) {
-        //         GetUserData(user!.email).then((userExtraData) => {
-        //             TestRequisition('GetUserData on AuthStateChanged');
-        //             //Coleto os User's no firestore
-        //             const userData = userExtraData;
-
-        //             //Defino o usuário com o model
-        //             setUser(userData);
-        //         }).catch((error) => {
-        //             const errorCode = error.code;
-        //             const errorMessage = error.message;
-
-        //             console.log(`Algo deu errado ao mudar OAuth. Erro Code:${errorCode}. Message:${errorMessage}`)
-        //         })
-        //     }
-        //     else {
-        //         setUser(null)
-        //     }
-
+        onAuthStateChanged(FB_Auth,(user) => {
+            if(user){
+                RTGetUser(user.uid)
+                .then((userData) =>{
+                    setUser(userData)
+                }).catch((error) => {
+                    console.error(error);
+                })
+            }
+        })
 
         // })
     }, [FB_Auth])

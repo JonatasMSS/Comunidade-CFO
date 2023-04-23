@@ -1,19 +1,69 @@
 import { Header } from "../../components/Header";
 import Like from '../../assets/icons/🦆 icon _heart_.svg';
 import Comment from '../../assets/icons/🦆 icon _message_.svg';
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { LikeComment } from "../../components/LikeComment";
 import { array } from "yup";
 import { CommentItem } from "../../components/CommentItem";
 import CommentModel from "../../models/comment_model";
+import { useEffect, useState } from "react";
+import PostModel from "../../models/post_model";
+import { Loader } from "../../components/Loader";
+import { RTGetPost, RTQueryGetComments, RTQueryGetPost } from "../../controllers/firebase_realtime_database";
+import { equalTo, orderByChild, orderByValue, set } from "firebase/database";
+import dayjs from "dayjs";
+import MDEditor from "@uiw/react-md-editor";
+import { CommentCreator } from "../../components/CommentCreator";
 
 
 
 export function DetailPage() {
 
-    const {state} = useLocation();
-    const comments = state[0].comments as CommentModel[];
+    const {postId} = useParams();
 
+    const [postData, setPostData] = useState<PostModel | null>();
+    const [comments, setComments] = useState<CommentModel[] | null>();
+    const [isLoading,setIsLoading] = useState(false);
+    const [isCommenting, setIsCommenting] = useState(false);
+    const relativeTime = dayjs(postData?.postTime).fromNow();
+
+
+
+    const fetchPostDataAndComments = async () => {
+        const [post,comments] = await Promise.all([
+            RTGetPost(postId!),
+            RTQueryGetComments([orderByChild('postReferenceId'),equalTo(postId!)])
+        ]);
+
+        const commentsOrderByLikes = comments?.sort((a,b) => Number(b.likes) - Number(a.likes));
+
+        setPostData(post);
+        setComments(commentsOrderByLikes);
+
+    }
+
+    useEffect(() => {
+        setIsLoading(true);
+        fetchPostDataAndComments().then(() => {
+            console.log('Post data e comentarios coletados com sucesso!');
+            console.log(comments);
+        }).finally(() => {
+            setIsLoading(false);
+        })
+
+        
+    },[])
+
+
+
+
+    if(isLoading && !postData){
+        return (
+            <div className="w-screen flex flex-col justify-center items-center h-screen bg-black/90">
+                <Loader/>
+            </div>
+        )
+    }
 
     return (
         <div className=" min-h-screen overflow-auto flex flex-col bg-DF-black">
@@ -26,47 +76,62 @@ export function DetailPage() {
                     {/* Inline data */}
                     <div className="flex items-baseline gap-5">
                         <div className="flex gap-1">
-                            <span className="font-bold ">{state[0].username}</span>
-                            <span className=" font-light ">{state[0].team}</span>
+                            <span className="font-bold ">{postData?.user}</span>
+                            <span className=" font-light ">{postData?.team}</span>
                         </div>
-                        <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{state[0].timepost}</span>
+                        <span className="text-sm text-zinc-700 bg-zinc-300 rounded-sm px-1">{relativeTime}</span>
                     </div>
 
-                    <span className="font-bold md:text-2xl">{state[0].title}</span>
-                    <p className="font-light break-words text-start md:text-lg">{state[0].body}</p>
+                    
+                    <div className=" p-1" data-color-mode="light">
+                        <span className="font-bold md:text-2xl">{postData?.title}</span>
+                        <MDEditor.Markdown disableCopy style={{backgroundColor:'#EBEBEB'}}  source={postData?.body}/>
+                    </div>
 
                     {/* divider */}
-                    <div className="w-full h-0.5 bg-black rounded-lg mt-5"/>
+                    <div className="w-full h-0.5 bg-black rounded-lg mt-5" />
                     <LikeComment
-                        comments={state[0].comments?.length ?? '0'}
-                        likes={state[0].likes}
-                        postUID={state[0].UID}
+                        comments={comments?.length.toString() ?? '0'}
+                        likes={postData?.likes ?? '0'}
+                        postUID={postData?.UID ?? ''}
                     />
 
                 </div>
 
             </div>
-            
-            <div className="flex font-K2D text-white flex-col w-full ">
-                <span className="font-semibold text-xl mx-5">Comentários</span>
+
+            {/* Reply button */}
+            <div className="w-full flex my-3 ">
+                {
+                    isCommenting ? 
+                    <CommentCreator
+                        postId={postId ?? ''}
+                        commentState={setIsCommenting}
+                    />: 
+                    <button onClick={() => setIsCommenting(true)} className="hover:bg-zinc-600 hover:scale-105 transition-all sm:text-xl p-1 mx-10 border-2 bg-DF-black rounded-lg text-white font-K2D">Reply</button>
+                }
+            </div>
+
+            <div className="flex font-K2D text-white flex-col w-full my-2">
+                <span className="font-semibold text-xl mx-5 ">Comentários</span>
             </div>
 
             {/* Comments section */}
             <div className="w-full flex flex-col p-5 gap-5">
-                {
-                  comments.map((comment) =>{
-                    return(
+               {
+                comments && comments.map((comment) => {
+                    return (
                         <CommentItem
+                            UID={comment.UID}
                             key={comment.UID}
                             body={comment.body}
                             likes={comment.likes}
-                            timepost=""
+                            timepost={comment.commentTime}
                             username={comment.user}
-
                         />
                     )
-                  } )
-                }
+                })
+               }
             </div>
 
 

@@ -37,7 +37,7 @@ const routes = createBrowserRouter([
         caseSensitive:true
     },
     {
-        path:'posts/:userId/details',
+        path:'posts/:postId/details',
         element:<AuthProvider child={<DetailPage/>}/>,
     },
     {

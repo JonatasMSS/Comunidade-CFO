@@ -45,8 +45,8 @@ export function LoginPage() {
                 setLoading(false);
                 navigator('/posts');
             } catch (error) {
-                if(error instanceof FirebaseError && error.code === "auth/user-not-found"){
-                    return alert("Senha ou email incorretos");
+                if(error instanceof FirebaseError && (error.code === "auth/user-not-found" || error.code === "auth/wrong-password")){
+                    return alert("Email ou senha incorretos!");
                 }
 
                alert(error);
