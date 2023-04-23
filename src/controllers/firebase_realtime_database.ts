@@ -188,6 +188,8 @@ export const RTGetAllPost = async () => {
 
     if (posts.exists()) {
         posts.forEach((post) => {
+            const { seconds, nanoseconds } = post.val()['postTime'];
+            const convertedToDate = new Timestamp(seconds, nanoseconds).toDate();
             postList.push(
                 new PostModel(
                     {
@@ -198,7 +200,7 @@ export const RTGetAllPost = async () => {
                         title: post.val()['title'],
                         user: post.val()['user'],
                         userId: post.val()['userId'],
-                        postTime: post.val()['postTime'],
+                        postTime: convertedToDate,
 
                     }
                 )
@@ -280,10 +282,14 @@ export const RTQueryGetComments = async (filter: QueryConstraint[]) => {
 
     if (comments.exists()) {
         comments.forEach((comment) => {
+
+            const {seconds,nanoseconds} = comment.val()['commentTime'];
+            const convertedTime = new Timestamp(seconds,nanoseconds).toDate()
+
             commentsList.push(new CommentModel({
                 UID: comment.key ?? '',
                 body: comment.val()['body'],
-                commentTime: comment.val()['commentTime'],
+                commentTime: convertedTime,
                 likes: comment.val()['likes'],
                 postReference: comment.val()['postReferenceId'],
                 user: comment.val()['user']
