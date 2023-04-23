@@ -349,6 +349,3 @@ export const RTUpdateComment =async (commentId:string,dataToChange:IUpdateCommen
 // )
 
 // console.log(await RTCreateUser(usertest));
-
-
-console.log(await RTQueryGetComments([orderByChild('postReferenceId'),equalTo('-NTe-B4sTe7tcWI2vnby'),limitToFirst(5)]))
